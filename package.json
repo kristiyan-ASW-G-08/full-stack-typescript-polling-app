@@ -1,0 +1,25 @@
+{
+  "name": "typescript-meetup-clone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kristiyan Todorov",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "clean": "lerna clean",
+    "bootstrap": "lerna bootstrap",
+    "new-version": "lerna version --conventional-commits --yes",
+    "diff": "lerna diff"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/jest",
+      "**/jest/**",
+      "**/babel-loader",
+      "**/babel-loader/**"
+    ]
+  }
+}
