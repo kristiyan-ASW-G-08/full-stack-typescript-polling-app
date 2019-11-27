@@ -5,12 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.0.2](https://github.com/kristiyan-ASW-G-08/typescript-meetup-clone/compare/v1.0.1...v1.0.2) (2019-11-27)
 
-**Note:** Version bump only for package typescript-meetup-clone
-
-
-
-
-
-## 1.0.1 (2019-11-26)
-
-**Note:** Version bump only for package typescript-meetup-clone
+**Note:** Version bump only for package @metp/common
