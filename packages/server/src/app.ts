@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction, Application } from "express";
 import bodyParser from "body-parser";
 import helmet from "helmet";
+import errorHandler from "@middleware/errorHandler";
 
 const app: Application = express();
 
@@ -13,8 +14,10 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
   );
-  
+
   next();
 });
+
+app.use(errorHandler);
 
 export default app;

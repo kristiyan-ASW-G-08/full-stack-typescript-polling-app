@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
-      "@utilities/*": ["src/utilities/*"]
+      "@utilities/*": ["src/utilities/*"],
+      "@middleware/*": ["src/middleware/*"]
     },
     "target": "es6",
     "lib": ["esnext"],
