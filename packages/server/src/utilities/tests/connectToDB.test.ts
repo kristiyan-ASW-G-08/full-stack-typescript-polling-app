@@ -2,16 +2,13 @@ import mongoose from "mongoose";
 import connectToDB from "@utilities/connectToDB";
 import logger from "@utilities/logger";
 
+jest.mock("mongoose");
 jest.mock("@utilities/logger");
 
 const loggerMock = logger as jest.Mocked<typeof logger>;
-
+const mongooseMock = mongoose as jest.Mocked<typeof mongoose>;
+const mongoURI = "mongoURL";
 describe("connectToDB", (): void => {
-  const { MONGO_USER, MONGO_PASSWORD, MONGO_DATABASE } = process.env;
-  const mongoURI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-zmcyw.mongodb.net/${MONGO_DATABASE}?retryWrites=true`;
-
-  const connectSpy = jest.spyOn(mongoose, "connect");
-
   afterEach(() => jest.clearAllMocks());
 
   afterAll(
@@ -24,8 +21,8 @@ describe("connectToDB", (): void => {
 
     await expect(connectToDB(mongoURI)).resolves.toBeUndefined();
 
-    expect(connectSpy).toHaveBeenCalledTimes(1);
-    expect(connectSpy).toHaveBeenCalledWith(mongoURI, {
+    expect(mongooseMock.connect).toHaveBeenCalledTimes(1);
+    expect(mongooseMock.connect).toHaveBeenCalledWith(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
@@ -35,12 +32,11 @@ describe("connectToDB", (): void => {
   it("should not connect to mongodb", async () => {
     expect.assertions(4);
 
-    const invalidURI = "invalidURL";
+    mongooseMock.connect.mockRejectedValueOnce(new Error("Connection Error"));
+    await expect(connectToDB(mongoURI)).resolves.toBeUndefined();
 
-    await expect(connectToDB(invalidURI)).resolves.toBeUndefined();
-
-    expect(connectSpy).toHaveBeenCalledTimes(1);
-    expect(connectSpy).toHaveBeenCalledWith(invalidURI, {
+    expect(mongooseMock.connect).toHaveBeenCalledTimes(1);
+    expect(mongooseMock.connect).toHaveBeenCalledWith(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
