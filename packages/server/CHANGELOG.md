@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/kristiyan-ASW-G-08/typescript-meetup-clone/compare/v1.0.4...v1.0.5) (2019-11-28)
+
+**Note:** Version bump only for package @metp/server
+
+
+
+
+
 ## [1.0.4](https://github.com/kristiyan-ASW-G-08/typescript-meetup-clone/compare/v1.0.3...v1.0.4) (2019-11-28)
 
 **Note:** Version bump only for package @metp/server
