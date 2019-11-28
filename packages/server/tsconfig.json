@@ -4,7 +4,8 @@
     "paths": {
       "@src/*": ["src/*"],
       "@utilities/*": ["src/utilities/*"],
-      "@middleware/*": ["src/middleware/*"]
+      "@middleware/*": ["src/middleware/*"],
+      "@customTypes/*": ["src/types/*"]
     },
     "target": "es6",
     "lib": ["esnext"],

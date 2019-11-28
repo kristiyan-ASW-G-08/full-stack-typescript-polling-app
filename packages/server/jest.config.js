@@ -8,6 +8,7 @@ module.exports = {
   moduleNameMapper: {
     "src/(.*)$": "<rootDir>/src/$1",
     "utilities/(.*)$": "<rootDir>/src/utilities/$1",
-    "middleware/(.*)$": "<rootDir>/src/middleware/$1"
+    "middleware/(.*)$": "<rootDir>/src/middleware/$1",
+    "customTypes/(.*)$": "<rootDir>/src/types/$1"
   }
 };
