@@ -1,12 +1,12 @@
-import { Response, Request, NextFunction, response } from "express";
-import RESTError from "@utilities/RESTError";
-import logger from "@utilities/logger";
+import { Response, Request, NextFunction } from 'express';
+import RESTError from '@utilities/RESTError';
+import logger from '@utilities/logger';
 
 const errorHandler = (
   error: RESTError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   logger.error(error);
   const status = error.status || 500;
