@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@schemaValidators/*": ["source/schemaValidators/*"],
+      "@customValidators/*": ["source/validators/*"],
       "@customTypes/*": ["source/types/*"]
     },
     "target": "es6",

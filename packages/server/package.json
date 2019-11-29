@@ -15,10 +15,12 @@
   "dependencies": {
     "@metp/common": "^1.0.2",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.12",
+    "mongoose-unique-validator": "^2.0.3",
     "rate-limiter-flexible": "^1.1.6",
     "winston": "^3.2.1",
     "yup": "^0.27.0"
@@ -32,6 +34,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/mock-fs": "^3.6.30",
     "@types/mongoose": "^5.5.8",
+    "@types/mongoose-unique-validator": "^1.0.3",
     "@types/node": "^12.6.6",
     "@types/supertest": "^2.0.8",
     "@types/winston": "^2.4.4",

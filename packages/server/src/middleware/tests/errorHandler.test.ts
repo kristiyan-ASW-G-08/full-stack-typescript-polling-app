@@ -1,5 +1,5 @@
 import { createRequest, createResponse } from 'node-mocks-http';
-import errorHandler from '@middleware/errorHandler';
+import errorHandler from '@customMiddleware/errorHandler';
 import RESTError from '@utilities/RESTError';
 import logger from '@utilities/logger';
 import ValidationError from '@metp/common/source/types/ValidationError';
@@ -12,6 +12,7 @@ const RESTErrorMock = RESTError as jest.MockedClass<typeof RESTError>;
 
 describe('errorHandler', () => {
   afterEach(() => jest.clearAllMocks());
+  afterAll(() => jest.restoreAllMocks());
   it('should call logger.error and send a response with the correct status code, message, and data', () => {
     expect.assertions(5);
     RESTErrorMock.mockImplementationOnce(

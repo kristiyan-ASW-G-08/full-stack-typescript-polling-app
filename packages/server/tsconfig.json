@@ -3,8 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
+      "@users/*": ["src/users/*"],
       "@utilities/*": ["src/utilities/*"],
-      "@middleware/*": ["src/middleware/*"],
+      "@customMiddleware/*": ["src/middleware/*"],
       "@customTypes/*": ["src/types/*"]
     },
     "target": "es6",

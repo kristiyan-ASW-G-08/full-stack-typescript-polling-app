@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loginValidators validate should reject 1`] = `"email must be a valid email"`;
+
+exports[`loginValidators validate should reject 2`] = `"2 errors occurred"`;
+
+exports[`loginValidators validate should reject 3`] = `"2 errors occurred"`;
+
+exports[`loginValidators validate should reject 4`] = `"2 errors occurred"`;
