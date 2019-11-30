@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @types/mongoose-unique-validtor --dev
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add monckingoose --dev
 
 PATH: 
   C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\PC\bin;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\PC\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\Users\PC\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\PC\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\Program Files\Docker Toolbox;C:\Users\PC\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Users\PC\AppData\Roaming\npm;C:\Users\PC\AppData\Local\Yarn\bin
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fmongoose-unique-validtor: Not found
+  Error: https://registry.yarnpkg.com/monckingoose: Not found
       at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66035:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140564:22)
       at Request.emit (events.js:210:5)
@@ -29,7 +29,7 @@ Trace:
 npm manifest: 
   {
     "name": "@metp/server",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "main": "index.js",
     "author": "Kristiyan Todorov",
     "license": "MIT",
@@ -38,17 +38,19 @@ npm manifest:
       "lint": "eslint .",
       "lint:fix": "eslint . --fix",
       "start": " nodemon --exec  ts-node -r tsconfig-paths/register --files src/index.ts NODE_ENV=development",
-      "test": "jest --watchAll",
+      "test": "jest --watchAll --runInBand",
       "build": "tsc src/index.ts"
     },
     "dependencies": {
-      "@metp/common": "^1.0.2",
+      "@metp/common": "^1.0.6",
       "bcryptjs": "^2.4.3",
       "body-parser": "^1.19.0",
+      "cookie-parser": "^1.4.4",
       "express": "^4.17.1",
       "helmet": "^3.21.2",
       "jsonwebtoken": "^8.5.1",
       "mongoose": "^5.7.12",
+      "mongoose-unique-validator": "^2.0.3",
       "rate-limiter-flexible": "^1.1.6",
       "winston": "^3.2.1",
       "yup": "^0.27.0"
@@ -62,6 +64,7 @@ npm manifest:
       "@types/jsonwebtoken": "^8.3.2",
       "@types/mock-fs": "^3.6.30",
       "@types/mongoose": "^5.5.8",
+      "@types/mongoose-unique-validator": "^1.0.3",
       "@types/node": "^12.6.6",
       "@types/supertest": "^2.0.8",
       "@types/winston": "^2.4.4",
@@ -545,7 +548,14 @@ Lockfile:
       "@types/bson" "*"
       "@types/node" "*"
   
-  "@types/mongoose@^5.5.8":
+  "@types/mongoose-unique-validator@^1.0.3":
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/@types/mongoose-unique-validator/-/mongoose-unique-validator-1.0.3.tgz#d36d3cd2407670b971be4bff682ed7908b802eb3"
+    integrity sha512-OcY5DN9ONapv0sLZVyiuczWI2Lti/yZ68V/WWKadyc3x++FZ4QsDOPKwbcjVfAtxHc7Tawi6cmwlSMyjx4Z6UA==
+    dependencies:
+      "@types/mongoose" "*"
+  
+  "@types/mongoose@*", "@types/mongoose@^5.5.8":
     version "5.5.32"
     resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.5.32.tgz#8a76c5be029086c1225bf88ed3ca83f01181121f"
     integrity sha512-2BemWy7SynT87deweqc2eCzg6pRyTVlnnMat2JxsTNoyeSFKC27b19qBTeKRfBVt+SjtaWd/ud4faUaObONwBA==
@@ -1350,10 +1360,23 @@ Lockfile:
     dependencies:
       safe-buffer "~5.1.1"
   
+  cookie-parser@^1.4.4:
+    version "1.4.4"
+    resolved "https://registry.yarnpkg.com/cookie-parser/-/cookie-parser-1.4.4.tgz#e6363de4ea98c3def9697b93421c09f30cf5d188"
+    integrity sha512-lo13tqF3JEtFO7FyA49CqbhaFkskRJ0u/UAiINgrIXeRCY41c88/zxtrECl8AKH3B0hj9q10+h3Kt8I7KlW4tw==
+    dependencies:
+      cookie "0.3.1"
+      cookie-signature "1.0.6"
+  
   cookie-signature@1.0.6:
     version "1.0.6"
     resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
     integrity sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
+  
+  cookie@0.3.1:
+    version "0.3.1"
+    resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
+    integrity sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
   
   cookie@0.4.0:
     version "0.4.0"
@@ -3581,6 +3604,16 @@ Lockfile:
       p-locate "^3.0.0"
       path-exists "^3.0.0"
   
+  lodash.foreach@^4.1.0:
+    version "4.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
+    integrity sha1-Gmo16s5AEoDH8G3d7DUWWrJ+PlM=
+  
+  lodash.get@^4.0.2:
+    version "4.4.2"
+    resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+    integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
+  
   lodash.includes@^4.3.0:
     version "4.3.0"
     resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -3844,6 +3877,14 @@ Lockfile:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
     integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
+  
+  mongoose-unique-validator@^2.0.3:
+    version "2.0.3"
+    resolved "https://registry.yarnpkg.com/mongoose-unique-validator/-/mongoose-unique-validator-2.0.3.tgz#247adbcda391bf5bc63fc3dcd43286a9ec833fa4"
+    integrity sha512-3/8pmvAC1acBZS6eWKAWQUiZBlARE1wyWtjga4iQ2wDJeOfRlIKmAvTNHSZXKaAf7RCRUd7wh7as6yWAOrjpQg==
+    dependencies:
+      lodash.foreach "^4.1.0"
+      lodash.get "^4.0.2"
   
   mongoose@^5.7.12:
     version "5.7.12"

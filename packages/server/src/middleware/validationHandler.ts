@@ -28,8 +28,7 @@ const validationHandler = (
         }),
       );
       const { status, message } = errors.BadRequest;
-      const error = new RESTError(status, message, validationErrors);
-      next(error);
+      next(new RESTError(status, message, validationErrors));
     }
   };
 };

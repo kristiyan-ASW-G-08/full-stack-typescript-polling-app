@@ -9,13 +9,14 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "start": " nodemon --exec  ts-node -r tsconfig-paths/register --files src/index.ts NODE_ENV=development",
-    "test": "jest --watchAll",
+    "test": "jest --watchAll --runInBand",
     "build": "tsc src/index.ts"
   },
   "dependencies": {
     "@metp/common": "^1.0.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
