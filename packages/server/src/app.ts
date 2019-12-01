@@ -3,11 +3,11 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import errorHandler from '@customMiddleware/errorHandler';
 
+
 const app: Application = express();
 
 app.use(helmet());
 app.use(bodyParser.json());
-
 app.use((req: Request, res: Response, next: NextFunction): void => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(

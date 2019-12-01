@@ -60,7 +60,7 @@ describe('User', () => {
     expect(user.email).toBe(email);
     expect(user.password).toBe(password);
     expect(user.location).toBe(location);
-    expect(user.confirmed).toBeTruthy();
+    expect(user.isConfirmed).toBeFalsy();
     expect(user.date).toBeDefined();
     expect(user._id).toBeDefined();
     expect(user.avatar).toBeUndefined();

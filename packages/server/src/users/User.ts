@@ -14,7 +14,7 @@ const UserSchema: Schema = new Schema({
   email: { required: true, type: String, minlength: 3, unique: true },
   password: { required: true, type: String, minlength: 12 },
   location: { type: String, required: true },
-  confirmed: { type: Boolean, default: true },
+  isConfirmed: { type: Boolean, default: false },
   avatar: { type: String },
   bio: { type: String },
   date: {

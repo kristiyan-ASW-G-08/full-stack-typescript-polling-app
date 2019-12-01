@@ -1,6 +1,4 @@
-import mongoose, { Model, Document, model, DocumentQuery } from 'mongoose';
-import RESTError, { errors } from '@utilities/RESTError';
-import duplicationErrorHandler from '@customMiddleware/duplicationErrorHandler';
+import RESTError from '@utilities/RESTError';
 import User from '@users/User';
 import UserType from '@customTypes/User';
 import getResource from '@utilities/getResource';
