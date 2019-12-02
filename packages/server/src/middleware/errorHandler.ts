@@ -8,6 +8,7 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ): void => {
+  console.log(error);
   logger.error(error);
   const status = error.status || 500;
   const { message, data } = error;

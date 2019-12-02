@@ -30,6 +30,7 @@ describe('User', () => {
     await mongoose.disconnect();
   });
   it('should throw an error when validation is not passed', async () => {
+    expect.assertions(3);
     const userObj = {
       username,
       email,
@@ -43,7 +44,7 @@ describe('User', () => {
     expect(user.validate).toThrowError();
   });
   it('should create a new user when validation is successful', async () => {
-    // expect.assertions(6);
+    expect.assertions(13);
 
     const user: UserType = new User({
       username,

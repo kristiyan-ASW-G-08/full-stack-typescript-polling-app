@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction, Application } from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import errorHandler from '@customMiddleware/errorHandler';
-
+import userRoutes from '@users/routes';
 
 const app: Application = express();
 
@@ -17,6 +17,8 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 
   next();
 });
+
+app.use(userRoutes);
 
 app.use(errorHandler);
 
