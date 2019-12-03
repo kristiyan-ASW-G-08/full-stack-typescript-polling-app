@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
 import bcypt from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 import User from '@users/User';
 import connectToDB from '@utilities/connectToDB';
 import sendEmail from '@utilities/sendEmail';
@@ -18,7 +19,12 @@ type routes = [
 ][];
 describe('User routes', () => {
   const port = process.env.PORT || 8080;
-  const { MONGO_USER, MONGO_PASSWORD, MONGO_DATABASE } = process.env;
+  const {
+    MONGO_USER,
+    MONGO_PASSWORD,
+    MONGO_DATABASE,
+    JWT_SECRET,
+  } = process.env;
   const mongoURI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-zmcyw.mongodb.net/${MONGO_DATABASE}?retryWrites=true`;
   const username = 'username';
   const email = 'testEmail@mail.com';
@@ -133,6 +139,86 @@ describe('User routes', () => {
         .post('/users')
         .send({});
       expect(status).toBe(400);
+    });
+  });
+  describe.only('Edit profile route - patch:/users/user authentication required', () => {
+    let token: string;
+    beforeEach(async () => {
+      const user = new User({
+        username,
+        location,
+        email,
+        password,
+        confirmed: true,
+      });
+      await user.save();
+
+      token = sign(
+        {
+          userId: user._id,
+        },
+        JWT_SECRET,
+        { expiresIn: '1h' },
+      );
+    });
+    it('should respond with a status of 200 on successful edit', async () => {
+      expect.assertions(1);
+
+      const { status } = await request(app)
+        .patch('/users/user')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          username: 'UpdatedUsername',
+          location: 'UpdatedLocation',
+          bio: 'UpdatedLocation',
+        });
+      expect(status).toBe(200);
+    });
+    it("should respond with a status of 400 if the request body doesn't pass validation", async () => {
+      expect.assertions(1);
+      const { status } = await request(app)
+        .post('/users')
+        .set('Authorization', `Bearer ${token}`)
+        .send({});
+      expect(status).toBe(400);
+    });
+    it("should respond with a status of 400 if the request body doesn't pass validation", async () => {
+      expect.assertions(1);
+      const { status } = await request(app)
+        .post('/users')
+        .set('Authorization', `Bearer ${token}`)
+        .send({});
+      expect(status).toBe(400);
+    });
+    it("should respond with a status of 401 if there is no authorization header or it's contents are invalid", async () => {
+      expect.assertions(1);
+      const { status } = await request(app)
+        .post('/users')
+        .send({
+          username: 'UpdatedUsername',
+          location: 'UpdatedLocation',
+          bio: 'UpdatedLocation',
+        });
+      expect(status).toBe(400);
+    });
+    it("should respond with a status of 404 when the user isn't found", async () => {
+      expect.assertions(1);
+      const notFoundToken = sign(
+        {
+          userId: mongoose.Types.ObjectId(),
+        },
+        JWT_SECRET,
+        { expiresIn: '1h' },
+      );
+      const { status } = await request(app)
+        .patch('/users/user')
+        .set('Authorization', `Bearer ${notFoundToken}`)
+        .send({
+          username: 'UpdatedUsername',
+          location: 'UpdatedLocation',
+          bio: 'UpdatedLocation',
+        });
+      expect(status).toBe(404);
     });
   });
 });

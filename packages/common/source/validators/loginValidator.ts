@@ -1,16 +1,9 @@
 import * as yup from 'yup';
+import { email, password } from './pathValidators';
 
 const loginValidator = yup.object().shape({
-  email: yup
-    .string()
-    .trim()
-    .email()
-    .required(),
-  password: yup
-    .string()
-    .trim()
-    .min(12)
-    .required(),
+  email,
+  password,
 });
 
 export default loginValidator;

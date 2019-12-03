@@ -54,7 +54,10 @@ export const logIn = async (
   try {
     const { email, password } = body;
     const { JWT_SECRET } = process.env;
-    const user = await getResource<UserType>(User, email);
+    const user = await getResource<UserType>(User, {
+      name: 'email',
+      value: email,
+    });
     if (!user.isConfirmed) {
       const { status, message } = errors.Unauthorized;
       throw new RESTError(status, message, [
@@ -92,6 +95,32 @@ export const logIn = async (
       },
     });
   } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+
+export const editUserProfile = async (
+  { body, userId }: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { username, bio, location } = body;
+    const user = await getResource<UserType>(
+      User,
+      {
+        name: '_id',
+        value: userId,
+      },
+      '-password -email -confirmed',
+    );
+    user.username = username;
+    user.bio = bio;
+    user.location = location;
+    await user.save();
+    res.status(200).json({ data: { user } });
+  } catch (err) {
+    console.log(err, 'EditHereBro');
     passErrorToNext(err, next);
   }
 };
