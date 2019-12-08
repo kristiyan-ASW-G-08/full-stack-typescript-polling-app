@@ -13,24 +13,21 @@ const UserSchema: Schema = new Schema({
   },
   email: { required: true, type: String, minlength: 3, unique: true },
   password: { required: true, type: String, minlength: 12 },
-  location: { type: String, required: true },
   isConfirmed: { type: Boolean, default: false },
-  avatar: { type: String },
-  bio: { type: String },
   date: {
     type: Date,
     default: Date.now,
   },
-  groups: [
+  polls: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Group',
+      ref: 'Poll',
     },
   ],
-  events: [
+  voted: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Event',
+      ref: 'Poll',
     },
   ],
 });

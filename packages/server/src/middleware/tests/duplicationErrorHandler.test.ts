@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 import duplicationErrorHandler from '@customMiddleware/duplicationErrorHandler';
 import RESTError, { errors } from '@utilities/RESTError';
-import ValidationError from '@metp/common/source/types/ValidationError';
+import ValidationError from '@poll/common/source/types/ValidationError';
 
 jest.mock('@utilities/RESTError');
 const RESTErrorMock = RESTError as jest.MockedClass<typeof RESTError>;

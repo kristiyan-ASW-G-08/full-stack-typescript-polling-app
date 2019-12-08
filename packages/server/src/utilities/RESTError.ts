@@ -1,4 +1,4 @@
-import ValidationError from '@metp/common/source/types/ValidationError';
+import ValidationError from '@poll/common/source/types/ValidationError';
 
 const errors = {
   BadRequest: {

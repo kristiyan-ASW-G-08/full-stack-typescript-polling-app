@@ -11,12 +11,6 @@ jest.mock('@utilities/sendEmail');
 
 const sendEmailMock = sendEmail as jest.MockedFunction<typeof sendEmail>;
 
-type routes = [
-  string,
-  () => Promise<void>,
-  number,
-  { [key: string]: string | number },
-][];
 describe('User routes', () => {
   const port = process.env.PORT || 8080;
   const {
@@ -30,25 +24,21 @@ describe('User routes', () => {
   const email = 'testEmail@mail.com';
   const password = 'testPassword';
   const hashedPassword = bcypt.hashSync(password);
-  const location = 'TestCity';
-  beforeAll(
-    async (): Promise<void> => {
-      await mongoose.disconnect();
-      await connectToDB(mongoURI);
-      app.listen(port);
-      await User.deleteMany({}).exec();
-    },
-  );
-  afterEach(
-    async (): Promise<void> => {
-      await User.deleteMany({}).exec();
-    },
-  );
-  afterAll(
-    async (): Promise<void> => {
-      await mongoose.disconnect();
-    },
-  );
+  beforeAll(async () => {
+    await mongoose.disconnect();
+    await connectToDB(mongoURI);
+    app.listen(port);
+    await User.deleteMany({}).exec();
+  });
+  beforeEach(async () => {
+    await User.deleteMany({}).exec();
+  });
+  afterEach(async () => {
+    await User.deleteMany({}).exec();
+  });
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
   describe('Login route - post:/users/user/login', () => {
     it('should respond with a status of 200 on successful login', async () => {
       expect.assertions(1);
@@ -57,7 +47,7 @@ describe('User routes', () => {
           username,
           email,
           password: hashedPassword,
-          location,
+
           isConfirmed: true,
         },
       ]);
@@ -76,7 +66,7 @@ describe('User routes', () => {
           username,
           email,
           password: hashedPassword,
-          location,
+
           isConfirmed: false,
         },
       ]);
@@ -95,7 +85,7 @@ describe('User routes', () => {
           username,
           email,
           password: hashedPassword,
-          location,
+
           isConfirmed: true,
         },
       ]);
@@ -127,7 +117,7 @@ describe('User routes', () => {
         .send({
           username,
           email,
-          location,
+
           password,
           confirmationPassword: password,
         });
@@ -141,15 +131,14 @@ describe('User routes', () => {
       expect(status).toBe(400);
     });
   });
-  describe.only('Edit profile route - patch:/users/user authentication required', () => {
+  describe('Edit profile route - patch:/users/user authentication required', () => {
     let token: string;
     beforeEach(async () => {
       const user = new User({
         username,
-        location,
         email,
         password,
-        confirmed: true,
+        isConfirmed: true,
       });
       await user.save();
 
@@ -169,18 +158,8 @@ describe('User routes', () => {
         .set('Authorization', `Bearer ${token}`)
         .send({
           username: 'UpdatedUsername',
-          location: 'UpdatedLocation',
-          bio: 'UpdatedLocation',
         });
       expect(status).toBe(200);
-    });
-    it("should respond with a status of 400 if the request body doesn't pass validation", async () => {
-      expect.assertions(1);
-      const { status } = await request(app)
-        .post('/users')
-        .set('Authorization', `Bearer ${token}`)
-        .send({});
-      expect(status).toBe(400);
     });
     it("should respond with a status of 400 if the request body doesn't pass validation", async () => {
       expect.assertions(1);
@@ -196,8 +175,6 @@ describe('User routes', () => {
         .post('/users')
         .send({
           username: 'UpdatedUsername',
-          location: 'UpdatedLocation',
-          bio: 'UpdatedLocation',
         });
       expect(status).toBe(400);
     });
@@ -215,9 +192,141 @@ describe('User routes', () => {
         .set('Authorization', `Bearer ${notFoundToken}`)
         .send({
           username: 'UpdatedUsername',
-          location: 'UpdatedLocation',
-          bio: 'UpdatedLocation',
         });
+      expect(status).toBe(404);
+    });
+  });
+
+  describe('verify user email - patch:/users/user/verify', () => {
+    let token: string;
+    beforeEach(async () => {
+      const user = new User({
+        username,
+        email,
+        password,
+        confirmed: false,
+      });
+      await user.save();
+
+      token = sign(
+        {
+          userId: user._id,
+        },
+        JWT_SECRET,
+        { expiresIn: '1h' },
+      );
+    });
+    it('should respond with a status of 204', async () => {
+      expect.assertions(1);
+      const { status } = await request(app).patch(
+        `/users/user/verify/${token}`,
+      );
+      expect(status).toBe(204);
+    });
+
+    it("should respond with a status of 404 when the user isn't found", async () => {
+      expect.assertions(1);
+      const notFoundToken = sign(
+        {
+          userId: mongoose.Types.ObjectId(),
+        },
+        JWT_SECRET,
+        { expiresIn: '1h' },
+      );
+      const { status } = await request(app).patch(
+        `/users/user/verify/${notFoundToken}`,
+      );
+
+      expect(status).toBe(404);
+    });
+  });
+  describe('reset password profile route - patch:/users/user/reset,authentication required', () => {
+    let token: string;
+    beforeEach(async () => {
+      const user = new User({
+        username,
+        email,
+        password,
+        confirmed: true,
+      });
+      await user.save();
+
+      token = sign(
+        {
+          userId: user._id,
+        },
+        JWT_SECRET,
+        { expiresIn: '1h' },
+      );
+    });
+    it('should respond with a status of 200 on successful edit', async () => {
+      expect.assertions(1);
+
+      const { status } = await request(app)
+        .patch('/users/user/reset')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          password: 'newValidPassword',
+        });
+      expect(status).toBe(204);
+    });
+    it("should respond with a status of 400 if the request body doesn't pass validation", async () => {
+      expect.assertions(1);
+      const { status } = await request(app)
+        .patch('/users/user/reset')
+        .set('Authorization', `Bearer ${token}`)
+        .send({});
+      expect(status).toBe(400);
+    });
+    it("should respond with a status of 404 when the user isn't found", async () => {
+      expect.assertions(1);
+      const notFoundToken = sign(
+        {
+          userId: mongoose.Types.ObjectId(),
+        },
+        JWT_SECRET,
+        { expiresIn: '1h' },
+      );
+      const { status } = await request(app)
+        .patch('/users/user/reset')
+        .set('Authorization', `Bearer ${notFoundToken}`)
+        .send({ password: 'newValidPassword' });
+      expect(status).toBe(404);
+    });
+  });
+  describe('request password reset email  - post:/users/user/request/reset', () => {
+    beforeEach(async () => {
+      const user = new User({
+        username,
+        email,
+        password,
+        isConfirmed: true,
+      });
+      await user.save();
+    });
+    it('should respond with a status of 204 on successful request', async () => {
+      expect.assertions(1);
+
+      const { status } = await request(app)
+        .post('/users/user/request/reset')
+        .send({
+          email,
+        });
+      expect(status).toBe(204);
+    });
+    it("should respond with a status of 400 if the request body doesn't pass validation", async () => {
+      expect.assertions(1);
+      const { status } = await request(app)
+        .post('/users/user/request/reset')
+        .send({});
+      expect(status).toBe(400);
+    });
+    it("should respond with a status of 404 when the user isn't found", async () => {
+      expect.assertions(1);
+
+      const { status } = await request(app)
+        .post('/users/user/request/reset')
+        .send({ email: 'unusedEmail@test.test' });
       expect(status).toBe(404);
     });
   });

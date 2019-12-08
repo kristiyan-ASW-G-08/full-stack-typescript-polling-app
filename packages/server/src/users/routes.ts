@@ -1,8 +1,17 @@
 import express from 'express';
-import { signUp, logIn, editUserProfile } from '@users/controllers';
+import * as yup from 'yup';
+import {
+  signUp,
+  logIn,
+  editUserProfile,
+  resetPassword,
+  requestPasswordResetEmail,
+  verifyEmail,
+} from '@users/controllers';
 import validationHandler from '@customMiddleware/validationHandler';
 import authenticationHandler from '@customMiddleware/authenticationHandler';
-import Validators from '@metp/common/source/validators/Validators';
+import Validators from '@poll/common/source/validators/Validators';
+import pathValidators from '@poll/common/source/validators/pathValidators';
 
 const router = express.Router();
 
@@ -25,4 +34,20 @@ router.patch(
   editUserProfile,
 );
 
+router.patch(
+  '/users/user/reset',
+  authenticationHandler,
+  validationHandler([
+    { schema: Validators.passwordResetValidator, target: 'body' },
+  ]),
+  resetPassword,
+);
+router.post(
+  '/users/user/request/reset',
+  validationHandler([
+    { schema: Validators.requestPasswordResetValidator, target: 'body' },
+  ]),
+  requestPasswordResetEmail,
+);
+router.patch('/users/user/verify/:token', verifyEmail);
 export default router;

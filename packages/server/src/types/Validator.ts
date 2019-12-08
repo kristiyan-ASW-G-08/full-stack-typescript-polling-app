@@ -1,6 +1,6 @@
-import { MixedSchema } from "yup";
+import { MixedSchema } from 'yup';
 
 export default interface Validator {
   schema: MixedSchema;
-  target: "body" | "query" | "params";
+  target: 'body' | 'query' | 'params';
 }

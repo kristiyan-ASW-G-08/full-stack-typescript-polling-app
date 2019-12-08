@@ -2,7 +2,7 @@ import RESTError from '@utilities/RESTError';
 import User from '@users/User';
 import UserType from '@customTypes/User';
 import getResource from '@utilities/getResource';
-import ValidationError from '@metp/common/source/types/ValidationError';
+import ValidationError from '@poll/common/source/types/ValidationError';
 
 jest.mock('@utilities/RESTError');
 

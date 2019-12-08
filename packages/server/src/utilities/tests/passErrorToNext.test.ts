@@ -1,6 +1,6 @@
 import passErrorToNext from '@utilities/passErrorToNext';
 import RESTError, { errors } from '@utilities/RESTError';
-import ValidationError from '@metp/common/source/types/ValidationError';
+import ValidationError from '@poll/common/source/types/ValidationError';
 
 jest.mock('@utilities/RESTError');
 

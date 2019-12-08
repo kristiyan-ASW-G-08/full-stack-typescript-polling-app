@@ -1,7 +1,6 @@
-import mongoose, { Model, Document } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import User from '@customTypes/User';
 import RESTError, { errors } from '@utilities/RESTError';
-import { string } from 'yup';
 
 interface FindQuery {
   name: string;

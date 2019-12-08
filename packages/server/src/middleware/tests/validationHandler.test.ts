@@ -1,6 +1,6 @@
 import httpMocks from 'node-mocks-http';
 import { MixedSchema } from 'yup';
-import ValidationError from '@metp/common/source/types/ValidationError';
+import ValidationError from '@poll/common/source/types/ValidationError';
 import Validator from '@customTypes/Validator';
 import validationHandler from '@customMiddleware/validationHandler';
 import RESTError from '@utilities/RESTError';

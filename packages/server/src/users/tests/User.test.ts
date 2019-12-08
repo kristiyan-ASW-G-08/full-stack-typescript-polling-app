@@ -44,7 +44,7 @@ describe('User', () => {
     expect(user.validate).toThrowError();
   });
   it('should create a new user when validation is successful', async () => {
-    expect.assertions(13);
+    expect.assertions(10);
 
     const user: UserType = new User({
       username,
@@ -60,13 +60,10 @@ describe('User', () => {
     expect(user.username).toBe(username);
     expect(user.email).toBe(email);
     expect(user.password).toBe(password);
-    expect(user.location).toBe(location);
     expect(user.isConfirmed).toBeFalsy();
     expect(user.date).toBeDefined();
     expect(user._id).toBeDefined();
-    expect(user.avatar).toBeUndefined();
-    expect(user.bio).toBeUndefined();
-    expect(user.groups.length).toBe(0);
-    expect(user.events.length).toBe(0);
+    expect(user.polls.length).toBe(0);
+    expect(user.voted.length).toBe(0);
   });
 });

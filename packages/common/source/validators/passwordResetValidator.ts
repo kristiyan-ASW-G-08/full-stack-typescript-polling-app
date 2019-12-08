@@ -1,8 +1,8 @@
 import * as yup from 'yup';
-import { username } from './pathValidators';
+import { password } from './pathValidators';
 
 const profileValidator = yup.object().shape({
-  username,
+  password,
 });
 
 export default profileValidator;

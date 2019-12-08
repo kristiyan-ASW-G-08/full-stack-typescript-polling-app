@@ -1,5 +1,5 @@
 {
-  "name": "@metp/server",
+  "name": "@poll/server",
   "version": "1.0.12",
   "main": "index.js",
   "author": "Kristiyan Todorov",
@@ -13,7 +13,7 @@
     "build": "tsc src/index.ts"
   },
   "dependencies": {
-    "@metp/common": "^1.0.11",
+    "@poll/common": "^1.0.11",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",

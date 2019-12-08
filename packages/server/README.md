@@ -1,4 +1,4 @@
-# Meetup  Clone: server package
+# server package
 
 ## Getting Started
 

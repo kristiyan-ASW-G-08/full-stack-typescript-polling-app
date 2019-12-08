@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import httpMocks from 'node-mocks-http';
 import jwt from 'jsonwebtoken';
 import authenticationHandler from '@customMiddleware/authenticationHandler';
-import RESTError, { errors } from '@utilities/RESTError';
-import ValidationError from '@metp/common/source/types/ValidationError';
+import RESTError from '@utilities/RESTError';
+import ValidationError from '@poll/common/source/types/ValidationError';
 
 jest.mock('@utilities/RESTError');
 

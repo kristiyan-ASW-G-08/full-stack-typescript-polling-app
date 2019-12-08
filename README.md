@@ -1,4 +1,4 @@
-# Full Meetup Clone
+# Full Stack Typescript Polling App
 
 ## Getting Started
 

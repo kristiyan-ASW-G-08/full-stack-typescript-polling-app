@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ValidationError } from 'yup';
 import Validator from '@customTypes/Validator';
-import CustomValidationError from '@metp/common/source/types/ValidationError';
+import CustomValidationError from '@poll/common/source/types/ValidationError';
 import RESTError, { errors } from '@utilities/RESTError';
 
 const validationHandler = (

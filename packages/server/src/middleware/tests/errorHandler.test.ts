@@ -2,7 +2,7 @@ import { createRequest, createResponse } from 'node-mocks-http';
 import errorHandler from '@customMiddleware/errorHandler';
 import RESTError from '@utilities/RESTError';
 import logger from '@utilities/logger';
-import ValidationError from '@metp/common/source/types/ValidationError';
+import ValidationError from '@poll/common/source/types/ValidationError';
 
 jest.mock('@utilities/RESTError');
 jest.mock('@utilities/logger');

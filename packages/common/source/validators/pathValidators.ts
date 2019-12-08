@@ -6,15 +6,7 @@ export const username = yup
   .min(1)
   .max(50)
   .required();
-export const bio = yup
-  .string()
-  .trim()
-  .max(400);
-export const location = yup
-  .string()
-  .trim()
-  .min(1)
-  .required();
+
 export const email = yup
   .string()
   .trim()
@@ -25,3 +17,9 @@ export const password = yup
   .trim()
   .min(12)
   .required();
+
+export default {
+  username,
+  email,
+  password,
+};

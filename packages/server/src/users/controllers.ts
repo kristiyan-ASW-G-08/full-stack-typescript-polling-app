@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import User from '@users/User';
 import UserType from '@customTypes/User';
 import MailOptions from '@customTypes/MailOptions';
@@ -8,6 +8,7 @@ import passErrorToNext from '@utilities/passErrorToNext';
 import getResource from '@utilities/getResource';
 import RESTError, { errors } from '@utilities/RESTError';
 import sendEmail from '@utilities/sendEmail';
+import hasConfirmedEmail from '@utilities/hasConfirmedEmail';
 
 export const signUp = async (
   { body }: Request,
@@ -58,12 +59,7 @@ export const logIn = async (
       name: 'email',
       value: email,
     });
-    if (!user.isConfirmed) {
-      const { status, message } = errors.Unauthorized;
-      throw new RESTError(status, message, [
-        { path: 'email', message: 'Confirm your email to log in' },
-      ]);
-    }
+    hasConfirmedEmail(user.isConfirmed);
     if (!(await bcrypt.compare(password, user.password))) {
       const { status, message } = errors.Unauthorized;
       throw new RESTError(status, message, [
@@ -78,17 +74,14 @@ export const logIn = async (
       { expiresIn: '1h' },
     );
 
-    const { username, bio, location, groups, events, avatar, date, _id } = user;
+    const { username, date, _id, polls, voted } = user;
     res.status(200).json({
       data: {
         token,
         user: {
           username,
-          bio,
-          location,
-          groups,
-          events,
-          avatar,
+          polls,
+          voted,
           date,
           _id,
         },
@@ -105,7 +98,7 @@ export const editUserProfile = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { username, bio, location } = body;
+    const { username } = body;
     const user = await getResource<UserType>(
       User,
       {
@@ -115,12 +108,83 @@ export const editUserProfile = async (
       '-password -email -confirmed',
     );
     user.username = username;
-    user.bio = bio;
-    user.location = location;
     await user.save();
     res.status(200).json({ data: { user } });
   } catch (err) {
-    console.log(err, 'EditHereBro');
+    passErrorToNext(err, next);
+  }
+};
+
+export const verifyEmail = async (
+  { params }: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { JWT_SECRET } = process.env;
+    const { token } = params;
+    // @ts-ignore
+    const { userId } = verify(token, JWT_SECRET);
+    const user = await getResource<UserType>(User, {
+      name: '_id',
+      value: userId,
+    });
+    console.log(user);
+    user.isConfirmed = true;
+    await user.save();
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    passErrorToNext(err, next);
+  }
+};
+
+export const requestPasswordResetEmail = async (
+  { body }: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { email } = body;
+    const { EMAIL, CLIENT_URL, JWT_SECRET } = process.env;
+    const user = await getResource(User, { name: 'email', value: email });
+
+    hasConfirmedEmail(user.isConfirmed);
+    const token = sign(
+      {
+        userId: user._id,
+      },
+      JWT_SECRET,
+      { expiresIn: '1h' },
+    );
+    const url = `${CLIENT_URL}/reset/${token}`;
+
+    const mailOptions: MailOptions = {
+      from: EMAIL,
+      to: email,
+      subject: 'MeetUpClone Password Reset',
+      html: `<a href="${url}">Reset your Password</a>`,
+    };
+    sendEmail(mailOptions);
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    passErrorToNext(err, next);
+  }
+};
+
+export const resetPassword = async (
+  { userId, body }: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { password } = body;
+    const user = await getResource(User, { name: '_id', value: userId });
+    user.password = await bcrypt.hash(password, 12);
+    await user.save();
+    res.sendStatus(204);
+  } catch (err) {
     passErrorToNext(err, next);
   }
 };

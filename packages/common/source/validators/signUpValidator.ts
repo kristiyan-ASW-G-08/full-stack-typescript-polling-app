@@ -1,9 +1,9 @@
 import * as yup from 'yup';
-import { username, email, location, password } from './pathValidators';
+import { username, email, password } from './pathValidators';
+
 const signUpValidator = yup.object().shape({
   username,
   email,
-  location,
   password,
   confirmationPassword: yup
     .string()
