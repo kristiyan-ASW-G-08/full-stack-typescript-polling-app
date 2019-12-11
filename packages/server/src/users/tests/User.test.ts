@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import User from 'src/users/User';
+import User from '@users/User';
 import UserType from '@customTypes/User';
 import connectToDB from '@utilities/connectToDB';
 import duplicationErrorHandler from '@customMiddleware/duplicationErrorHandler';

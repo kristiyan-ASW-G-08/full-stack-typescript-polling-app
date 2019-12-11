@@ -4,6 +4,9 @@
     "paths": {
       "@src/*": ["src/*"],
       "@users/*": ["src/users/*"],
+      "@pollOptions/*": ["src/options/*"],
+      "@polls/*": ["src/polls/*"],
+      "@votes/*": ["src/votes/*"],
       "@utilities/*": ["src/utilities/*"],
       "@customMiddleware/*": ["src/middleware/*"],
       "@customTypes/*": ["src/types/*"]
