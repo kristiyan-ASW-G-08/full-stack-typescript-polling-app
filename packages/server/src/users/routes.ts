@@ -1,4 +1,4 @@
-import express from 'express';
+import { Router } from 'express';
 import * as yup from 'yup';
 import {
   signUp,
@@ -11,9 +11,8 @@ import {
 import validationHandler from '@customMiddleware/validationHandler';
 import authenticationHandler from '@customMiddleware/authenticationHandler';
 import Validators from '@poll/common/source/validators/Validators';
-import pathValidators from '@poll/common/source/validators/pathValidators';
 
-const router = express.Router();
+const router = Router();
 
 router.post(
   '/users',

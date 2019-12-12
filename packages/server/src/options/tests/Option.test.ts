@@ -23,11 +23,10 @@ describe('Option', () => {
   });
 
   it('should create a new option when validation is successful', async () => {
-    expect.assertions(5);
+    expect.assertions(4);
 
     const option: OptionType = new Option({
       name,
-      creator,
       poll,
     });
 
@@ -35,7 +34,6 @@ describe('Option', () => {
 
     expect(option.name).toBe(name);
     expect(option.date).toBeDefined();
-    expect(option.creator.equals(creator)).toBeTruthy();
     expect(option.poll.equals(poll)).toBeTruthy();
   });
 });

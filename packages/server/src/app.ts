@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import errorHandler from '@customMiddleware/errorHandler';
 import userRoutes from '@users/routes';
+import pollRoutes from '@polls/routes';
 
 const app: Application = express();
 
@@ -19,6 +20,7 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 });
 
 app.use(userRoutes);
+app.use(pollRoutes);
 
 app.use(errorHandler);
 

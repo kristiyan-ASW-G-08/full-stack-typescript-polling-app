@@ -3,6 +3,7 @@ import signUpValidator from './signUpValidator';
 import profileValidator from './profileValidator';
 import passwordResetValidator from './passwordResetValidator';
 import requestPasswordResetValidator from './requestPasswordResetValidator';
+import pollValidator from './pollValidator';
 
 export default {
   loginValidator,
@@ -10,4 +11,5 @@ export default {
   profileValidator,
   passwordResetValidator,
   requestPasswordResetValidator,
+  pollValidator,
 };

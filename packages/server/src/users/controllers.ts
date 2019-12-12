@@ -18,13 +18,12 @@ export const signUp = async (
   try {
     const { username, location, email, password } = body;
     const { EMAIL, CLIENT_URL, JWT_SECRET } = process.env;
-    const user = new User({
+    const user = await new User({
       username,
       location,
       email,
       password: await bcrypt.hash(password, 12),
-    });
-    await user.save();
+    }).save();
 
     const token = sign(
       {

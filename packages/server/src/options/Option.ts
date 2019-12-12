@@ -17,10 +17,6 @@ const OptionSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Poll',
   },
-  creator: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
 });
 
 export default mongoose.model<Option>('Option', OptionSchema);

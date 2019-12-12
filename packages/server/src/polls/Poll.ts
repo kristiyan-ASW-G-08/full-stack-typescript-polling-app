@@ -6,13 +6,17 @@ const PollSchema: Schema = new Schema({
     required: true,
     type: String,
     minlength: 1,
-    maxlength: 50,
+    maxlength: 200,
   },
   description: {
     required: true,
     type: String,
     minlength: 1,
-    maxlength: 500,
+    maxlength: 1000,
+  },
+  endDate: {
+    type: Date,
+    required: true,
   },
   date: {
     type: Date,
