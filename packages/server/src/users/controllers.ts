@@ -128,12 +128,10 @@ export const verifyEmail = async (
       name: '_id',
       value: userId,
     });
-    console.log(user);
     user.isConfirmed = true;
     await user.save();
     res.sendStatus(204);
   } catch (err) {
-    console.log(err);
     passErrorToNext(err, next);
   }
 };
@@ -167,7 +165,6 @@ export const requestPasswordResetEmail = async (
     sendEmail(mailOptions);
     res.sendStatus(204);
   } catch (err) {
-    console.log(err);
     passErrorToNext(err, next);
   }
 };
