@@ -7,12 +7,24 @@ const VoteSchema: Schema = new Schema({
     default: Date.now,
   },
   voter: {
+    required: true,
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
   option: {
+    required: true,
     type: Schema.Types.ObjectId,
-    ref: 'option',
+    ref: 'Option',
+  },
+  poll: {
+    required: true,
+    type: Schema.Types.ObjectId,
+    ref: 'Poll',
+  },
+  location: {
+    latitude: Number,
+    longitude: Number,
+    county: String,
   },
 });
 
