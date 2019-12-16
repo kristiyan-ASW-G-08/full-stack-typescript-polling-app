@@ -22,8 +22,8 @@ const VoteSchema: Schema = new Schema({
     ref: 'Poll',
   },
   location: {
-    latitude: Number,
-    longitude: Number,
+    latitude: String,
+    longitude: String,
     county: String,
   },
 });

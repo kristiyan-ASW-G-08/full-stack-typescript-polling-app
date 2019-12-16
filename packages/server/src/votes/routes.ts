@@ -9,6 +9,7 @@ const router = Router();
 router.post(
   '/polls/:pollId/options/:optionId/votes',
   authenticationHandler,
+  validationHandler([{ schema: Validators.voteValidator, target: 'body' }]),
   postVote,
 );
 

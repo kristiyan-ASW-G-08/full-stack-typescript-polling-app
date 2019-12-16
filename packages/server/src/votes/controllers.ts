@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import User from '@users/User';
 import Vote from '@votes/Vote';
+import VoteType from '@customTypes/Vote';
 import passErrorToNext from '@utilities/passErrorToNext';
 import getGeoData from '@utilities/getGeoData';
-import { getUserById } from '@utilities/getUser';
+import getResource from '@utilities/getResource';
+import RESTError, { errors } from '@utilities/RESTError';
 
 export const postVote = async (
   { userId, body, params }: Request,
@@ -14,13 +15,20 @@ export const postVote = async (
     const { GEO_KEY } = process.env;
     const { optionId, pollId } = params;
     const { latitude, longitude } = body;
-    const user = await getUserById(userId);
     const { country } = (
       await getGeoData(latitude, longitude, GEO_KEY)
     )?.results?.components;
+    const existingVote = await Vote.findOne({
+      voter: userId,
+      poll: pollId,
+    });
+    if (existingVote) {
+      const { status, message } = errors.Conflict;
+      throw new RESTError(status, message);
+    }
     await new Vote({
       voter: userId,
-      option: params.optionId,
+      option: optionId,
       poll: pollId,
       location: {
         latitude,
@@ -30,6 +38,7 @@ export const postVote = async (
     }).save();
     res.sendStatus(204);
   } catch (err) {
+    console.log(err);
     passErrorToNext(err, next);
   }
 };
