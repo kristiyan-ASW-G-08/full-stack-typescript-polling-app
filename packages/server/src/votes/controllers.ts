@@ -3,7 +3,7 @@ import Vote from '@votes/Vote';
 import VoteType from '@customTypes/Vote';
 import passErrorToNext from '@utilities/passErrorToNext';
 import getGeoData from '@utilities/getGeoData';
-import getResource from '@utilities/getResource';
+import getOptionById from '@utilities/getOptionById';
 import RESTError, { errors } from '@utilities/RESTError';
 
 export const postVote = async (
@@ -18,6 +18,7 @@ export const postVote = async (
     const { country } = (
       await getGeoData(latitude, longitude, GEO_KEY)
     )?.results?.components;
+
     const existingVote = await Vote.findOne({
       voter: userId,
       poll: pollId,
@@ -36,9 +37,11 @@ export const postVote = async (
         country,
       },
     }).save();
+    const option = await getOptionById(optionId);
+    option.votes += 1;
+    await option.save();
     res.sendStatus(204);
   } catch (err) {
-    console.log(err);
     passErrorToNext(err, next);
   }
 };

@@ -17,6 +17,10 @@ const OptionSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Poll',
   },
+  votes: {
+    type: Number,
+    default: 0,
+  },
 });
 
 export default mongoose.model<Option>('Option', OptionSchema);
