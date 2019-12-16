@@ -84,18 +84,11 @@ describe('User routes', () => {
       expect(status).toBe(401);
     });
   });
-  describe('Post a new Poll route - post:/polls authentication required', () => {
+  describe('Get a poll route - get:/polls/:pollId', () => {
     const name = 'pollName';
     const description = 'pollDescription';
-    const options = ['option1', 'option2'];
+
     const endDate = '1995-12-17T03:24:00';
-    const token = sign(
-      {
-        userId: mongoose.Types.ObjectId(),
-      },
-      JWT_SECRET,
-      { expiresIn: '1h' },
-    );
     let pollId: mongoose.Types.ObjectId;
     beforeEach(async () => {
       const poll = new Poll({
@@ -120,6 +113,27 @@ describe('User routes', () => {
         `/polls/${mongoose.Types.ObjectId()}`,
       );
       expect(status).toBe(404);
+    });
+  });
+
+  describe('get polls route - get:/polls ', () => {
+    const name = 'pollName';
+    const description = 'pollDescription';
+    const endDate = '1995-12-17T03:24:00';
+    beforeEach(async () => {
+      const poll = new Poll({
+        name,
+        description,
+        endDate,
+        creators: mongoose.Types.ObjectId,
+      });
+      await poll.save();
+    });
+    it('should respond with a status of 200 and return a poll', async () => {
+      expect.assertions(1);
+
+      const { status } = await request(app).get(`/polls`);
+      expect(status).toBe(200);
     });
   });
 });

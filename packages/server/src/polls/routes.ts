@@ -2,7 +2,8 @@ import { Router } from 'express';
 import Validators from '@poll/common/source/validators/Validators';
 import authenticationHandler from '@customMiddleware/authenticationHandler';
 import validationHandler from '@customMiddleware/validationHandler';
-import { postPoll, getPoll } from '@polls/controllers';
+import paginationHandler from '@customMiddleware/paginationHandler';
+import { postPoll, getPoll, getPolls } from '@polls/controllers';
 
 const router = Router();
 
@@ -14,5 +15,12 @@ router.post(
 );
 
 router.get('/polls/:pollId', getPoll);
+
+router.get(
+  '/polls',
+  validationHandler([{ schema: Validators.sortValidator, target: 'query' }]),
+  paginationHandler,
+  getPolls,
+);
 
 export default router;

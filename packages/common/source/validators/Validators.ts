@@ -5,6 +5,7 @@ import passwordResetValidator from './passwordResetValidator';
 import requestPasswordResetValidator from './requestPasswordResetValidator';
 import pollValidator from './pollValidator';
 import voteValidator from './voteValidator';
+import sortValidator from './sortValidator';
 
 export default {
   loginValidator,
@@ -14,4 +15,5 @@ export default {
   requestPasswordResetValidator,
   pollValidator,
   voteValidator,
+  sortValidator,
 };
