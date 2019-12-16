@@ -2,7 +2,7 @@ import { Router } from 'express';
 import Validators from '@poll/common/source/validators/Validators';
 import authenticationHandler from '@customMiddleware/authenticationHandler';
 import validationHandler from '@customMiddleware/validationHandler';
-import { postPoll } from '@polls/controllers';
+import { postPoll, getPoll } from '@polls/controllers';
 
 const router = Router();
 
@@ -12,5 +12,7 @@ router.post(
   validationHandler([{ schema: Validators.pollValidator, target: 'body' }]),
   postPoll,
 );
+
+router.get('/polls/:pollId', getPoll);
 
 export default router;

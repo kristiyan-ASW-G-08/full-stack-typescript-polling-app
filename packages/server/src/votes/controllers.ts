@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import Vote from '@votes/Vote';
-import VoteType from '@customTypes/Vote';
 import passErrorToNext from '@utilities/passErrorToNext';
 import getGeoData from '@utilities/getGeoData';
 import getOptionById from '@utilities/getOptionById';

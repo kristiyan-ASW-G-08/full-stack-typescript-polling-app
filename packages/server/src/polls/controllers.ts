@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import passErrorToNext from '@utilities/passErrorToNext';
-import getResource from '@utilities/getResource';
+import getPollById from '@utilities/getPollById';
 import Poll from '@polls/Poll';
 import Option from '@pollOptions/Option';
 
@@ -25,6 +25,21 @@ export const postPoll = async (
     await Option.insertMany(optionObjects);
 
     res.status(200).json({ data: { pollId: _id } });
+  } catch (err) {
+    passErrorToNext(err, next);
+  }
+};
+
+export const getPoll = async (
+  { params }: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { pollId } = params;
+    const poll = await getPollById(pollId);
+    const options = await Option.find({ poll: pollId });
+    res.status(200).json({ data: { poll, options } });
   } catch (err) {
     passErrorToNext(err, next);
   }
