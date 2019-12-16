@@ -9,6 +9,7 @@ import getResource from '@utilities/getResource';
 import RESTError, { errors } from '@utilities/RESTError';
 import sendEmail from '@utilities/sendEmail';
 import hasConfirmedEmail from '@utilities/hasConfirmedEmail';
+import { getUserByEmail, getUserById } from '@utilities/getUser';
 
 export const signUp = async (
   { body }: Request,
@@ -54,10 +55,7 @@ export const logIn = async (
   try {
     const { email, password } = body;
     const { JWT_SECRET } = process.env;
-    const user = await getResource<UserType>(User, {
-      name: 'email',
-      value: email,
-    });
+    const user = await getUserByEmail(email);
     hasConfirmedEmail(user.isConfirmed);
     if (!(await bcrypt.compare(password, user.password))) {
       const { status, message } = errors.Unauthorized;
@@ -98,14 +96,7 @@ export const editUserProfile = async (
 ): Promise<void> => {
   try {
     const { username } = body;
-    const user = await getResource<UserType>(
-      User,
-      {
-        name: '_id',
-        value: userId,
-      },
-      '-password -email -confirmed',
-    );
+    const user = await getUserById(userId);
     user.username = username;
     await user.save();
     res.status(200).json({ data: { user } });
@@ -124,10 +115,7 @@ export const verifyEmail = async (
     const { token } = params;
     // @ts-ignore
     const { userId } = verify(token, JWT_SECRET);
-    const user = await getResource<UserType>(User, {
-      name: '_id',
-      value: userId,
-    });
+    const user = await getUserById(userId);
     user.isConfirmed = true;
     await user.save();
     res.sendStatus(204);
@@ -144,7 +132,7 @@ export const requestPasswordResetEmail = async (
   try {
     const { email } = body;
     const { EMAIL, CLIENT_URL, JWT_SECRET } = process.env;
-    const user = await getResource(User, { name: 'email', value: email });
+    const user = await getUserByEmail(email);
 
     hasConfirmedEmail(user.isConfirmed);
     const token = sign(
@@ -176,7 +164,7 @@ export const resetPassword = async (
 ): Promise<void> => {
   try {
     const { password } = body;
-    const user = await getResource(User, { name: '_id', value: userId });
+    const user = await getUserById(userId);
     user.password = await bcrypt.hash(password, 12);
     await user.save();
     res.sendStatus(204);

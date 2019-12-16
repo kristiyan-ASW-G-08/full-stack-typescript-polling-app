@@ -7,10 +7,10 @@ interface FindQuery {
 }
 const getResource = async <T extends Document>(
   model: Model<T>,
-  { value, name }: FindQuery,
+  query: { [key: string]: string | number | mongoose.Types.ObjectId },
   select: string = '',
 ): Promise<T> => {
-  const resource = await model.findOne({ [name]: value }).select(select);
+  const resource = await model.findOne(query).select(select);
   if (!resource) {
     const { status, message } = errors.NotFound;
     throw new RESTError(status, message);

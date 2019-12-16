@@ -15,7 +15,7 @@ describe('getResource', () => {
 
   it('should call find and select', async () => {
     const select = jest.fn(() => true);
-    const findQuery = { name: 'email', value: 'testMail@test' };
+    const findQuery = { email: 'testMail@test' };
     const selectQuery = 'username email';
     const findOneSpy = jest
       .spyOn(User, 'findOne')
@@ -24,9 +24,7 @@ describe('getResource', () => {
     await getResource<UserType>(User, findQuery, selectQuery);
 
     expect(findOneSpy).toHaveBeenCalledTimes(1);
-    expect(findOneSpy).toHaveBeenCalledWith({
-      [findQuery.name]: findQuery.value,
-    });
+    expect(findOneSpy).toHaveBeenCalledWith(findQuery);
     expect(select).toHaveBeenCalledTimes(1);
     expect(select).toHaveBeenCalledWith(selectQuery);
     expect(RESTErrorMock).not.toHaveBeenCalled();
@@ -34,7 +32,7 @@ describe('getResource', () => {
   it('should throw an error if find and select resolve to falsy value', async () => {
     expect.assertions(2);
     const select = jest.fn(() => false);
-    const findQuery = { name: 'email', value: 'testMail@test' };
+    const findQuery = { email: 'testMail@test' };
     const selectQuery = 'username email';
     const findOneSpy = jest
       .spyOn(User, 'findOne')

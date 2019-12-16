@@ -16,8 +16,7 @@ describe('getVote', (): void => {
 
       expect(getResource).toHaveBeenCalledTimes(1);
       expect(getResourceMock).toHaveBeenCalledWith(Vote, {
-        name: '_id',
-        value: voteId,
+        _id: voteId,
       });
     });
   });
@@ -29,8 +28,7 @@ describe('getVote', (): void => {
 
       expect(getResource).toHaveBeenCalledTimes(1);
       expect(getResourceMock).toHaveBeenCalledWith(Vote, {
-        name: 'voter',
-        value: userId,
+        voter: userId,
       });
     });
   });

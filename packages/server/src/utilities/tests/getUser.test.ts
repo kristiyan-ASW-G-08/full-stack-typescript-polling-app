@@ -16,8 +16,7 @@ describe('getUser', (): void => {
 
       expect(getResource).toHaveBeenCalledTimes(1);
       expect(getResourceMock).toHaveBeenCalledWith(User, {
-        name: 'email',
-        value: email,
+        email,
       });
     });
   });
@@ -31,8 +30,7 @@ describe('getUser', (): void => {
       expect(getResourceMock).toHaveBeenCalledWith(
         User,
         {
-          name: '_id',
-          value: userId,
+          _id: userId,
         },
         '',
       );

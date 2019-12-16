@@ -3,14 +3,14 @@ import UserType from '@customTypes/User';
 import getResource from '@utilities/getResource';
 
 export const getUserByEmail = async (email: string): Promise<UserType> =>
-  getResource<UserType>(User, { name: 'email', value: email });
+  getResource<UserType>(User, { email });
 
 export const getUserById = async (
-  userId: string,
+  _id: string,
   secure: boolean = true,
 ): Promise<UserType> =>
   getResource<UserType>(
     User,
-    { name: '_id', value: userId },
+    { _id },
     secure ? '' : '-password -email -confirmed',
   );
