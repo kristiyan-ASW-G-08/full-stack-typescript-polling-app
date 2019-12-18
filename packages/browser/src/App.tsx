@@ -1,17 +1,18 @@
-import React, { useReducer } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { FC, lazy, Suspense, useContext } from "react";
+import { AuthContext } from "contexts/AuthContext";
+import { BrowserRouter } from "react-router-dom";
+import "styles/tailwind.css";
+const AuthApp = lazy(() => import("AuthApp"));
+const UnAuthApp = lazy(() => import("UnAuthApp"));
 
-const App: React.FC = () => {
+const App: FC = () => {
+  const { authState } = useContext(AuthContext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Suspense fallback={<p>Loading</p>}>
+        {authState?.user ? <AuthApp /> : <UnAuthApp />}
+      </Suspense>
+    </BrowserRouter>
   );
 };
 
