@@ -1,9 +1,11 @@
+import mongoose from 'mongoose'
 import { Request, Response, NextFunction } from 'express';
 import Vote from '@votes/Vote';
 import passErrorToNext from '@utilities/passErrorToNext';
 import getGeoData from '@utilities/getGeoData';
 import getOptionById from '@utilities/getOptionById';
 import RESTError, { errors } from '@utilities/RESTError';
+import { getUserById } from '@src/utilities/getUser';
 
 export const postVote = async (
   { userId, body, params }: Request,
@@ -17,7 +19,9 @@ export const postVote = async (
     const { country } = (
       await getGeoData(latitude, longitude, GEO_KEY)
     )?.results?.components;
-
+    const user  = await getUserById(userId)
+    user.voted = [...user.voted,mongoose.Types.ObjectId(pollId)]
+    await user.save()
     const existingVote = await Vote.findOne({
       voter: userId,
       poll: pollId,
@@ -26,6 +30,7 @@ export const postVote = async (
       const { status, message } = errors.Conflict;
       throw new RESTError(status, message);
     }
+     
     await new Vote({
       voter: userId,
       option: optionId,
