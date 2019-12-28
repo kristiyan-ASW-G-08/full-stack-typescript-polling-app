@@ -1,7 +1,10 @@
 import React, { FC, lazy, Suspense, useContext } from "react";
 import { AuthContext } from "contexts/AuthContext";
 import { BrowserRouter } from "react-router-dom";
+
+import "./importFontAwesome";
 import "styles/tailwind.css";
+
 const AuthApp = lazy(() => import("AuthApp"));
 const UnAuthApp = lazy(() => import("UnAuthApp"));
 
