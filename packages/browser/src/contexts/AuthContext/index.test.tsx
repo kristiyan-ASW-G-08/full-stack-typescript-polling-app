@@ -31,8 +31,12 @@ describe("AuthContext", () => {
       currentAuthState = authState;
       return (
         <div>
-          <button onClick={() => login(authenticatedAuthState)}>login</button>
-          <button onClick={() => logout()}>logout</button>
+          <button type="button" onClick={() => login(authenticatedAuthState)}>
+            login
+          </button>
+          <button type="button" onClick={() => logout()}>
+            logout
+          </button>
         </div>
       );
     };
@@ -43,7 +47,7 @@ describe("AuthContext", () => {
     });
 
     await wait(() => {
-      expect(currentAuthState).toMatchObject(defaultAuthState);
+      expect(currentAuthState).toEqual(defaultAuthState);
     });
 
     const loginButton = getByText("login");
@@ -52,7 +56,7 @@ describe("AuthContext", () => {
     await wait(() => {
       expect(reducers.login).toHaveBeenCalledTimes(1);
       expect(reducers.logout).not.toHaveBeenCalled();
-      expect(currentAuthState).toMatchObject(authenticatedAuthState);
+      expect(currentAuthState).toEqual(authenticatedAuthState);
     });
 
     userEvent.click(logoutButton);
@@ -60,7 +64,7 @@ describe("AuthContext", () => {
     await wait(() => {
       expect(reducers.login).toHaveBeenCalledTimes(1);
       expect(reducers.logout).toHaveBeenCalledTimes(1);
-      expect(currentAuthState).toMatchObject(defaultAuthState);
+      expect(currentAuthState).toEqual(defaultAuthState);
     });
   });
 });

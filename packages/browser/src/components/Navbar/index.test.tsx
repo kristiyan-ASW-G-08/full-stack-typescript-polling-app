@@ -9,14 +9,24 @@ describe("Navbar", () => {
     expect.assertions(2);
 
     const links = [
-      { path: "/", content: "Home" },
-      { path: "/polls", content: "Polls" }
+      { to: "/", content: "Home" },
+      { to: "/polls", content: "Polls" }
     ];
-    const { getByText } = render(<Navbar links={links} />, {
-      wrapper: ({ children }) => <BrowserRouter>{children}</BrowserRouter>
-    });
+    const { queryByText } = render(
+      <Navbar>
+        {links.map(({ to, content }) => (
+          <a key={content} href={to}>
+            {content}
+          </a>
+        ))}
+      </Navbar>,
+      {
+        wrapper: ({ children }) => <BrowserRouter>{children}</BrowserRouter>
+      }
+    );
+
     links.forEach(({ content }) => {
-      expect(getByText(content)).toBeTruthy();
+      expect(queryByText(content)).toBeTruthy();
     });
   });
 });

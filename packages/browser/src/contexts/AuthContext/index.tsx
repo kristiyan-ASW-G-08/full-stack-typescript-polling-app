@@ -1,6 +1,7 @@
 import React, { FC, createContext, useReducer, Dispatch } from "react";
 import AuthState from "types/AuthState";
 import reducer from "contexts/AuthContext/reducer";
+
 export interface Action {
   type: "login" | "logout";
   payload: AuthState;
