@@ -9,11 +9,15 @@ const AuthApp = lazy(() => import("AuthApp"));
 const UnAuthApp = lazy(() => import("UnAuthApp"));
 
 const App: FC = () => {
-  const { authState } = useContext(AuthContext);
+  const { authState, login } = useContext(AuthContext);
+  const lsAuth = localStorage.getItem("pollAppAuth");
+  if (lsAuth !== null && authState.user === undefined) {
+    login(JSON.parse(lsAuth));
+  }
   return (
     <BrowserRouter>
       <Suspense fallback={<p>Loading</p>}>
-        {authState?.user ? <AuthApp /> : <UnAuthApp />}
+        {authState.user === undefined ? <UnAuthApp /> : <AuthApp />}
       </Suspense>
     </BrowserRouter>
   );

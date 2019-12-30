@@ -1,4 +1,4 @@
-import reducer, { reducers, login } from "./reducer";
+import reducer, { reducers } from "./reducer";
 import { defaultAuthState } from ".";
 
 describe("AuthContext reducer", () => {
@@ -34,8 +34,8 @@ describe("AuthContext reducer", () => {
 
   it("login reducer should return the passed payload and set token and user in localStorage", () => {
     expect.assertions(3);
-    jest.spyOn(window.localStorage.__proto__, "setItem");
-    window.localStorage.__proto__.setItem = jest.fn();
+    jest.spyOn(window.localStorage, "setItem");
+    window.localStorage.setItem = jest.fn();
     reducers.login(authenticatedAuthState);
 
     expect(localStorage.setItem).toHaveBeenCalledTimes(2);
@@ -52,8 +52,8 @@ describe("AuthContext reducer", () => {
   });
   it("logout reducer should return the passed payload and remove token and user in localStorage", () => {
     expect.assertions(3);
-    jest.spyOn(window.localStorage.__proto__, "removeItem");
-    window.localStorage.__proto__.removeItem = jest.fn();
+    jest.spyOn(window.localStorage, "removeItem");
+    window.localStorage.removeItem = jest.fn();
     reducers.logout();
 
     expect(localStorage.removeItem).toHaveBeenCalledTimes(2);

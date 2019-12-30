@@ -2,13 +2,11 @@ import AuthState from "types/AuthState";
 import { defaultAuthState, Action } from ".";
 
 export const logout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
+  localStorage.removeItem("pollAppAuth");
   return defaultAuthState;
 };
 export const login = (payload: AuthState) => {
-  localStorage.setItem("token", JSON.stringify(payload.token));
-  localStorage.setItem("user", JSON.stringify(payload.user));
+  localStorage.setItem("pollAppAuth", JSON.stringify(payload));
   return payload;
 };
 

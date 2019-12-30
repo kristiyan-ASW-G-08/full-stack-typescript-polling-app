@@ -2,10 +2,9 @@ import React, { FC } from "react";
 import axios from "axios";
 import { Formik, FormikValues, FormikActions } from "formik";
 import { useHistory } from "react-router-dom";
-import UserLoginValidator from "@poll/common/source/validators/loginValidator";
+import UserSignUpValidator from "@poll/common/source/validators/signUpValidator";
 import transformValidationErrors from "utilities/transformValidationErrors";
 import Input from "components/Input";
-import getUrl from "utilities/getUrl";
 import FormWrapper from "components/FormWrapper";
 
 export const SignUp: FC = () => {
@@ -15,22 +14,24 @@ export const SignUp: FC = () => {
     { setErrors }: FormikActions<FormikValues>
   ): Promise<void> => {
     try {
-      await axios.post(getUrl("/users"), formValues);
+      console.log(process.env);
+      await axios.post(`${process.env.REACT_APP_API_URL}/users`, formValues);
       history.push("/");
     } catch (error) {
+      console.log(error);
       if (
         error?.response?.data?.data &&
         Array.isArray(error.response.data.data)
       ) {
         setErrors(transformValidationErrors(error.response.data.data));
       } else {
-        console.log(error);
+        console.log({ ...error });
       }
     }
   };
   return (
     <Formik
-      validationSchema={UserLoginValidator}
+      validationSchema={UserSignUpValidator}
       initialValues={{
         username: "",
         email: "",

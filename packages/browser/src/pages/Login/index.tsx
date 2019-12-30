@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import UserLoginValidator from "@poll/common/source/validators/loginValidator";
 import transformValidationErrors from "utilities/transformValidationErrors";
 import Input from "components/Input";
-import getUrl from "utilities/getUrl";
 import FormWrapper from "components/FormWrapper";
 import { AuthContext } from "contexts/AuthContext";
 
@@ -18,9 +17,10 @@ export const Login: FC = () => {
   ): Promise<void> => {
     try {
       const response = await axios.post(
-        getUrl("/users/user/login"),
+        `${process.env.REACT_APP_API_URL}/users/user/login`,
         formValues
       );
+      console.log(response.data?.data);
       login(response.data?.data);
       history.push("/");
     } catch (error) {

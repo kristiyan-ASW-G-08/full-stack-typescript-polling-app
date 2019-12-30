@@ -44,5 +44,4 @@ export const options = yup
   .max(10)
   .required();
 
-
 export const endDate = yup.date().required();

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, wait, waitForElement } from "@testing-library/react";
+import { render, wait } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import UserEvent from "@testing-library/user-event";
 import { Router } from "react-router-dom";
@@ -53,12 +53,15 @@ describe("SignUp", () => {
 
     await wait(() => {
       expect(axios.post).toHaveBeenCalledTimes(1);
-      expect(axios.post).toHaveBeenCalledWith("https://localhost:8080/users", {
-        confirmationPassword: "passwordpassword",
-        email: "testmail@test.test",
-        password: "passwordpassword",
-        username: "newUsername"
-      });
+      expect(axios.post).toHaveBeenCalledWith(
+        `${process.env.REACT_APP_API_URL}/users`,
+        {
+          confirmationPassword: "passwordpassword",
+          email: "testmail@test.test",
+          password: "passwordpassword",
+          username: "newUsername"
+        }
+      );
       expect(history.push).toHaveBeenCalledTimes(1);
       expect(history.push).toHaveBeenCalledWith("/");
     });
@@ -110,12 +113,15 @@ describe("SignUp", () => {
 
     await wait(() => {
       expect(axios.post).toHaveBeenCalledTimes(1);
-      expect(axios.post).toHaveBeenCalledWith("https://localhost:8080/users", {
-        confirmationPassword: "passwordpassword",
-        email: "testmail@test.test",
-        password: "passwordpassword",
-        username: "newUsername"
-      });
+      expect(axios.post).toHaveBeenCalledWith(
+        `${process.env.REACT_APP_API_URL}/users`,
+        {
+          confirmationPassword: "passwordpassword",
+          email: "testmail@test.test",
+          password: "passwordpassword",
+          username: "newUsername"
+        }
+      );
       expect(history.push).not.toHaveBeenCalled();
     });
   });

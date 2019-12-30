@@ -59,7 +59,7 @@ describe("Login", () => {
     await wait(() => {
       expect(axios.post).toHaveBeenCalledTimes(1);
       expect(axios.post).toHaveBeenCalledWith(
-        "https://localhost:8080/users/user/login",
+        `${process.env.REACT_APP_API_URL}/users/user/login`,
         {
           email: "testmail@test.test",
           password: "passwordpassword"
@@ -116,7 +116,7 @@ describe("Login", () => {
     await wait(() => {
       expect(axios.post).toHaveBeenCalledTimes(1);
       expect(axios.post).toHaveBeenCalledWith(
-        "https://localhost:8080/users/user/login",
+        `${process.env.REACT_APP_API_URL}/users/user/login`,
         {
           email: "testmail@test.test",
           password: "passwordpassword"

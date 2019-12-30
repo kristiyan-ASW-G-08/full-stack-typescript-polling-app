@@ -11,8 +11,8 @@ const history = createMemoryHistory();
 jest.spyOn(history, "push");
 
 describe("UnAuthNavbar", () => {
-  afterEach(() => jest.clearAllMocks());
-  afterAll(() => jest.resetAllMocks());
+  afterEach(jest.clearAllMocks);
+  afterAll(jest.resetAllMocks);
   const links = [
     { to: "/", content: "Home" },
     { to: "/login", content: "Log In" },
