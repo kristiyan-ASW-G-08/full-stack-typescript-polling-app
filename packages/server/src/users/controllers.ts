@@ -31,7 +31,7 @@ export const signUp = async (
         userId: user._id,
       },
       JWT_SECRET,
-      { expiresIn: '1h' },
+      { expiresIn: '168h' },
     );
     const url = `${CLIENT_URL}/confirmation/${token}`;
     const mailOptions: MailOptions = {

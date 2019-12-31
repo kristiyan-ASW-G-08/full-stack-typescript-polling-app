@@ -6,13 +6,15 @@ interface InputProps {
   placeholder: string;
   type: string;
   component?: "input" | "textarea";
+  testId?: string | boolean;
 }
 
 export const Input: FC<InputProps> = ({
   name,
   placeholder,
   type,
-  component = "input"
+  component = "input",
+  testId = false
 }) => (
   <div className="mb-4">
     <FastField
@@ -21,6 +23,7 @@ export const Input: FC<InputProps> = ({
       type={type}
       placeholder={placeholder}
       component={component}
+      data-testid={testId}
     />
     <ErrorMessage
       component="label"

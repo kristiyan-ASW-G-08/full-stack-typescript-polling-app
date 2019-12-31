@@ -63,7 +63,7 @@ describe("SignUp", () => {
         }
       );
       expect(history.push).toHaveBeenCalledTimes(1);
-      expect(history.push).toHaveBeenCalledWith("/");
+      expect(history.push).toHaveBeenCalledWith("/login");
     });
   });
 

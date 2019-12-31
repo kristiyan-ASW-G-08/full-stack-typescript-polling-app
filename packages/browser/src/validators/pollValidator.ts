@@ -9,7 +9,7 @@ import {
 const pollValidator = yup.object().shape({
   name: pollName,
   description,
-  option: yup
+  options: yup
     .array()
     .of(
       yup.object().shape({
@@ -17,10 +17,11 @@ const pollValidator = yup.object().shape({
         id: yup.number()
       })
     )
-    .min(2)
-    .max(10)
+    .min(2, "a poll must have at least 2 options")
+    .max(10, "a poll must have a maximum of 10 options")
     .required(),
   endDate
 });
 
 export default pollValidator;
+

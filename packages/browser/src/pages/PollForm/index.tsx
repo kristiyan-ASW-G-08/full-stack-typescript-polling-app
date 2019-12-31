@@ -1,21 +1,35 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import axios from "axios";
 import { Formik, FormikValues, FormikActions, FieldArray } from "formik";
 import pollValidator from "validators/pollValidator";
 import transformValidationErrors from "utilities/transformValidationErrors";
 import Input from "components/Input";
 import FormWrapper from "components/FormWrapper";
+import Button from "components/Button";
+import { AuthContext } from "contexts/AuthContext";
+import { useHistory } from "react-router-dom";
 
 export const PollForm: FC = () => {
+  const { authState } = useContext(AuthContext);
+  const history = useHistory();
   const submitHandler = async (
     formValues: FormikValues,
     { setErrors }: FormikActions<FormikValues>
   ): Promise<void> => {
     try {
-      console.log("nani");
-      console.log(formValues);
+      const options = formValues.options.map(
+        ({ value }: { value: string; id: string }) => value
+      );
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/polls`,
+        { ...formValues, options },
+        {
+          headers: { Authorization: `bearer ${authState.token}` }
+        }
+      );
+      const { pollId } = response?.data?.data;
+      history.push(`/polls/${pollId}`);
     } catch (error) {
-      console.log(error);
       if (
         error?.response?.data?.data &&
         Array.isArray(error.response.data.data)
@@ -32,51 +46,56 @@ export const PollForm: FC = () => {
       initialValues={{
         name: "",
         description: "",
+        endDate: "",
         options: []
       }}
       onSubmit={submitHandler}
     >
-      {({ values: { options } }) => (
+      {({ values: { options }, errors }) => (
         <FormWrapper>
           <Input name="name" type="text" placeholder="Name" />
           <Input name="description" type="text" placeholder="Description" />
-          {/* <FieldArray name="options">
+          <Input name="endDate" type="date" placeholder="End Date" />
+          <FieldArray name="options">
             {({ push, remove }) => (
               <>
-                 {options.map(({ id }, index) => (
+                {typeof errors?.options === "string" ? (
+                  <p className="text-red-500 font-semibold py-2 px-2">
+                    {errors.options}
+                  </p>
+                ) : (
+                  ""
+                )}
+                {options.map(({ id }, index) => (
                   <div key={id}>
                     <Input
+                      testId={`option-${index}`}
                       name={`options[${index}].value`}
                       type="text"
                       placeholder="Poll Option"
                     />
-                    <button
-                      onClick={() => remove(index)}
-                      className="text-gray-500 hover:text-gray-600 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                      type="button"
-                    >
-                      Remove
-                    </button>
+                    <Button onClick={() => remove(index)}>Remove</Button>
                   </div>
                 ))}
-                <button
-                  onClick={() => push({ id: Date.now(), value: "" })}
-                  className="text-gray-500 hover:text-gray-600 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="button"
-                >
-                  Add option
-                </button>
+
+                <div className="flex items-center justify-between">
+                  <button
+                    className="bg-teal-400 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit"
+                  >
+                    Create Poll
+                  </button>
+                  <button
+                    onClick={() => push({ id: Date.now(), value: "" })}
+                    className="text-gray-500 hover:text-gray-600 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button"
+                  >
+                    Add option
+                  </button>
+                </div>
               </>
             )}
-          </FieldArray> */}
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-teal-400 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Create Poll
-            </button>
-          </div>
+          </FieldArray>
         </FormWrapper>
       )}
     </Formik>

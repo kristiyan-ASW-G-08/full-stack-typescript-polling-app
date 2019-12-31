@@ -36,7 +36,7 @@ export const optionName = yup
   .trim()
   .min(1)
   .max(200)
-  .required();
+  .required("options can't be empty");
 export const options = yup
   .array()
   .of(optionName)
@@ -44,4 +44,7 @@ export const options = yup
   .max(10)
   .required();
 
-export const endDate = yup.date().required();
+export const endDate = yup
+  .date()
+  .min(new Date(), 'must be later than the current date')
+  .required();

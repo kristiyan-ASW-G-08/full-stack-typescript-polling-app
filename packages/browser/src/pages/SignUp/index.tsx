@@ -14,11 +14,9 @@ export const SignUp: FC = () => {
     { setErrors }: FormikActions<FormikValues>
   ): Promise<void> => {
     try {
-      console.log(process.env);
       await axios.post(`${process.env.REACT_APP_API_URL}/users`, formValues);
-      history.push("/");
+      history.push("/login");
     } catch (error) {
-      console.log(error);
       if (
         error?.response?.data?.data &&
         Array.isArray(error.response.data.data)
