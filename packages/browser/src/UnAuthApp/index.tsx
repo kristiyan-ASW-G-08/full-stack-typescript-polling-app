@@ -5,6 +5,7 @@ import UnAuthNavbar from "components/UnAuthNavbar";
 const Home = lazy(() => import("pages/Home"));
 const Login = lazy(() => import("pages/Login"));
 const SignUp = lazy(() => import("pages/SignUp"));
+const NotFound = lazy(() => import("pages/NotFound"));
 
 const UnAuthApp: FC = () => {
   return (
@@ -27,6 +28,14 @@ const UnAuthApp: FC = () => {
           render={(): JSX.Element => (
             <Suspense fallback={<div>loading...</div>}>
               <SignUp />
+            </Suspense>
+          )}
+        />
+        <Route
+          exact
+          render={(): JSX.Element => (
+            <Suspense fallback={<div>loading...</div>}>
+              <NotFound />
             </Suspense>
           )}
         />

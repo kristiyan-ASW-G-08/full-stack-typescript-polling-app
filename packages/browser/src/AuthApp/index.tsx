@@ -4,6 +4,7 @@ import AuthNavbar from "components/AuthNavbar";
 
 const Home = lazy(() => import("pages/Home"));
 const PollForm = lazy(() => import("pages/PollForm"));
+const NotFound = lazy(() => import("pages/NotFound"));
 
 const AuthApp: FC = () => {
   return (
@@ -17,6 +18,14 @@ const AuthApp: FC = () => {
           render={(): JSX.Element => (
             <Suspense fallback={<div>loading...</div>}>
               <PollForm />
+            </Suspense>
+          )}
+        />
+        <Route
+          exact
+          render={(): JSX.Element => (
+            <Suspense fallback={<div>loading...</div>}>
+              <NotFound />
             </Suspense>
           )}
         />
