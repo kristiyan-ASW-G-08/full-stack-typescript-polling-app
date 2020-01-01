@@ -51,7 +51,7 @@ export const PollForm: FC = () => {
       }}
       onSubmit={submitHandler}
     >
-      {({ values: { options }, errors }) => (
+      {({ values: { options }, errors, setFieldError }) => (
         <FormWrapper>
           <Input name="name" type="text" placeholder="Name" />
           <Input name="description" type="text" placeholder="Description" />
@@ -86,7 +86,16 @@ export const PollForm: FC = () => {
                     Create Poll
                   </button>
                   <button
-                    onClick={() => push({ id: Date.now(), value: "" })}
+                    onClick={() => {
+                      if (options.length < 4) {
+                        push({ id: Date.now(), value: "" });
+                      } else {
+                        setFieldError(
+                          'options',
+                          "the maximum  number of  options is 4"
+                        );
+                      }
+                    }}
                     className="text-gray-500 hover:text-gray-600 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="button"
                   >

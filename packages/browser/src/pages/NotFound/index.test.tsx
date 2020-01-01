@@ -1,23 +1,18 @@
 import React from "react";
-import { render, wait } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import { render, wait } from "@testing-library/react";";
 import UserEvent from "@testing-library/user-event";
-import axios from "axios";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import NotFound from ".";
 
-jest.mock("axios");
-const axiosMock = axios as jest.Mocked<typeof axios>;
-axiosMock.patch.mockReturnValueOnce(Promise.resolve({ data: {}, status: 200 }));
-
-const history = createMemoryHistory();
-
-jest.spyOn(history, "goBack");
-jest.spyOn(history, "push");
 describe("NotFound", () => {
-  afterAll(() => jest.restoreAllMocks());
+  afterAll(jest.restoreAllMocks);
   it("renders", async () => {
+    const history = createMemoryHistory();
+
+    jest.spyOn(history, "goBack");
+    jest.spyOn(history, "push");
+
     expect.assertions(3);
 
     const { getByText } = render(<NotFound />, {

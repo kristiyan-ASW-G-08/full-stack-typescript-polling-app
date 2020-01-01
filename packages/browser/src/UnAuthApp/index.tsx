@@ -1,6 +1,7 @@
 import React, { FC, lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import UnAuthNavbar from "components/UnAuthNavbar";
+import Loader from "components/Loader";
 
 const Home = lazy(() => import("pages/Home"));
 const Login = lazy(() => import("pages/Login"));
@@ -17,7 +18,7 @@ const UnAuthApp: FC = () => {
           exact
           path="/login"
           render={(): JSX.Element => (
-            <Suspense fallback={<div>loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <Login />
             </Suspense>
           )}
@@ -26,7 +27,7 @@ const UnAuthApp: FC = () => {
           exact
           path="/signup"
           render={(): JSX.Element => (
-            <Suspense fallback={<div>loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <SignUp />
             </Suspense>
           )}
@@ -34,7 +35,7 @@ const UnAuthApp: FC = () => {
         <Route
           exact
           render={(): JSX.Element => (
-            <Suspense fallback={<div>loading...</div>}>
+            <Suspense fallback={<Loader />}>
               <NotFound />
             </Suspense>
           )}

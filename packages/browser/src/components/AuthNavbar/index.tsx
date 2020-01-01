@@ -9,6 +9,7 @@ const AuthNavbar: FC = () => {
     <Navbar>
       <NavLink to="/" content="Home" />
       <NavLink to="/poll" content="Create a new Poll" />
+      <NavLink to="/polls" content="Browse polls" />
       <button
         onClick={logout}
         type="button"

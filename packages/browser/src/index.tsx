@@ -1,4 +1,5 @@
 import React from "react";
+// @ts-ignore
 import ReactDOM from "react-dom";
 import { AuthContextProvider } from "contexts/AuthContext";
 import App from "./App";

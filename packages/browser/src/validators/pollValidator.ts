@@ -18,10 +18,9 @@ const pollValidator = yup.object().shape({
       })
     )
     .min(2, "a poll must have at least 2 options")
-    .max(10, "a poll must have a maximum of 10 options")
+    .max(4, "a poll must have a maximum of 4 options")
     .required(),
   endDate
 });
 
 export default pollValidator;
-
