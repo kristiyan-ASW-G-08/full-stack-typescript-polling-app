@@ -1,16 +1,15 @@
-import React, { FC, Suspense } from "react";
+import React, { FC, useEffect, Suspense } from "react";
 import Loader from "components/Loader";
-import PollsContainer from "components/PollsContainer";
+import axios from "axios";
 
 const Polls: FC = () => {
+  useEffect(() => {});
   return (
     <section
       style={{ height: "90vh" }}
       className="flex justify-center  w-screen"
     >
-      <Suspense fallback={<Loader />}>
-        <PollsContainer />
-      </Suspense>
+      <Suspense fallback={<Loader />} />
     </section>
   );
 };
