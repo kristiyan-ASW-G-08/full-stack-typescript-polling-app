@@ -5,7 +5,7 @@ import Loader from "components/Loader";
 
 const Home = lazy(() => import("pages/Home"));
 const PollForm = lazy(() => import("pages/PollForm"));
-const PollPage = lazy(() => import("pages/PollForm"));
+const PollPage = lazy(() => import("pages/PollPage"));
 const Polls = lazy(() => import("pages/Polls"));
 const NotFound = lazy(() => import("pages/NotFound"));
 
