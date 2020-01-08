@@ -1,6 +1,6 @@
 {
   "name": "@poll/server",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "main": "index.js",
   "author": "Kristiyan Todorov",
   "license": "MIT",
