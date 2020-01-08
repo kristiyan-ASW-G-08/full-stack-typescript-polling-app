@@ -91,5 +91,3 @@ export const getPolls = async (
     passErrorToNext(err, next);
   }
 };
-
-export default postPoll;

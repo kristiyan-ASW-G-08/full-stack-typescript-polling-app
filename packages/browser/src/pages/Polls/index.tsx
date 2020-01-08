@@ -25,6 +25,7 @@ const Polls: FC = () => {
   useEffect(() => {
     getPolls(`${process.env.REACT_APP_API_URL}/polls`)
       .then(({ newPolls, next }) => {
+        console.log(newPolls);
         setNext(next);
         setPolls(newPolls);
       })

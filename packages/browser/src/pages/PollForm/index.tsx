@@ -91,7 +91,7 @@ export const PollForm: FC = () => {
                         push({ id: Date.now(), value: "" });
                       } else {
                         setFieldError(
-                          'options',
+                          "options",
                           "the maximum  number of  options is 4"
                         );
                       }
