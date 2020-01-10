@@ -8,7 +8,7 @@ import Option from '@pollOptions/Option';
 import connectToDB from '@utilities/connectToDB';
 import app from 'src/app';
 
-describe('User routes', () => {
+describe('Poll routes', () => {
   const port = process.env.PORT || 8080;
   const {
     MONGO_USER,
@@ -39,7 +39,10 @@ describe('User routes', () => {
     const name = 'pollName';
     const description = 'pollDescription';
     const options = ['option1', 'option2'];
-    const endDate = '1995-12-17T03:24:00';
+    const date = new Date();
+    const endDate = new Date(
+      date.setFullYear(date.getFullYear() + 1),
+    ).toLocaleDateString();
     const token = sign(
       {
         userId: mongoose.Types.ObjectId(),

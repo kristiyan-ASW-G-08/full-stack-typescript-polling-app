@@ -6,15 +6,6 @@ import Vote from '@votes/Vote';
 import Option from '@pollOptions/Option';
 import connectToDB from '@utilities/connectToDB';
 import app from 'src/app';
-import getGeoData from '@utilities/getGeoData';
-
-jest.mock('@utilities/getGeoData');
-
-const getGeoDataMock = getGeoData as jest.MockedFunction<typeof getGeoData>;
-
-getGeoDataMock.mockResolvedValue({
-  results: { components: { country: 'MockLand' } },
-});
 
 describe('Vote routes', () => {
   const port = process.env.PORT || 8080;
@@ -51,8 +42,6 @@ describe('Vote routes', () => {
   });
   describe('vote route - post:/polls/:pollId/options/:optionId/votes', () => {
     const pollId = mongoose.Types.ObjectId();
-    const latitude = 'latitude';
-    const longitude = 'longitude';
     let token: string;
     let userId: string;
     let optionId: string;
@@ -84,11 +73,8 @@ describe('Vote routes', () => {
       expect.assertions(1);
       const { status } = await request(app)
         .post(`/polls/${pollId}/options/${optionId}/votes`)
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          latitude,
-          longitude,
-        });
+        .set('Authorization', `Bearer ${token}`);
+
       expect(status).toBe(204);
     });
     it('should respond with a status of 409 when the user has already voted', async () => {
@@ -98,20 +84,9 @@ describe('Vote routes', () => {
       expect.assertions(1);
       const { status } = await request(app)
         .post(`/polls/${pollId}/options/${optionId}/votes`)
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          latitude,
-          longitude,
-        });
+        .set('Authorization', `Bearer ${token}`);
+
       expect(status).toBe(409);
-    });
-    it("should respond with a status of 400 if the request body doesn't pass validation", async () => {
-      expect.assertions(1);
-      const { status } = await request(app)
-        .post(`/polls/${pollId}/options/${optionId}/votes`)
-        .set('Authorization', `Bearer ${token}`)
-        .send({});
-      expect(status).toBe(400);
     });
   });
 });

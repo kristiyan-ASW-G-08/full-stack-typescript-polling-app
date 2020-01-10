@@ -29,6 +29,7 @@ export const postPoll = async (
 
     res.status(200).json({ data: { pollId: _id } });
   } catch (err) {
+    console.log(err);
     passErrorToNext(err, next);
   }
 };

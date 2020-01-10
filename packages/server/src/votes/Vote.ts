@@ -21,11 +21,6 @@ const VoteSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Poll',
   },
-  location: {
-    latitude: String,
-    longitude: String,
-    county: String,
-  },
 });
 
 export default mongoose.model<Vote>('Vote', VoteSchema);
