@@ -12,7 +12,6 @@ import Poll from "types/Poll";
 import Option from "types/Option";
 import { AuthContext } from "contexts/AuthContext";
 import voteValidator from "validators/voteValidator";
-import getLocation from "utilities/getLocation";
 import transformValidationErrors from "utilities/transformValidationErrors";
 import FormWrapper from "components/FormWrapper";
 import getPoll from "./getPoll";
@@ -21,7 +20,8 @@ const PollPage: FC = () => {
   const { pollId } = useParams();
   const history = useHistory();
   const {
-    user: { voted, token }
+    token,
+    user: { voted }
   } = useContext(AuthContext).authState;
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[] | null>(null);
@@ -38,22 +38,20 @@ const PollPage: FC = () => {
       })
       .catch(console.log);
   });
-  const vote = async (optionId: string, altitude: string, latitude: string) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/polls/${poll?._id}/options/${optionId}/votes`,
-      { altitude, latitude },
-      {
-        headers: { Authorization: `bearer ${token}` }
-      }
-    );
-    history.push(`/polls/${pollId}/results`);
-  };
+
   const submitHandler = async (
     { option }: FormikValues,
     { setErrors }: FormikActions<FormikValues>
   ): Promise<void> => {
     try {
-      getLocation(() => vote(option));
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/polls/${poll?._id}/options/${option}/votes`,
+        {},
+        {
+          headers: { Authorization: `bearer ${token}` }
+        }
+      );
+      history.push(`/polls/${pollId}/results`);
     } catch (error) {
       if (
         error?.response?.data?.data &&

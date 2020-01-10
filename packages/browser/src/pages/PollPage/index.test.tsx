@@ -11,6 +11,13 @@ import PollForm from ".";
 
 jest.mock("axios");
 jest.mock("./getPoll");
+const pollId = "mockId";
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: () => ({
+    pollId: "mockId"
+  })
+}));
 
 const axiosMock = axios as jest.Mocked<typeof axios>;
 const getPollMock = getPoll as jest.MockedFunction<typeof getPoll>;
@@ -18,29 +25,13 @@ const getPollMock = getPoll as jest.MockedFunction<typeof getPoll>;
 const history = createMemoryHistory();
 
 jest.spyOn(history, "push");
-const latitude = "someLatitude";
-const longitude = "someLongitude";
-
-// @ts-ignore
-global.navigator = {
-  geolocation: {
-    getCurrentPosition: jest.fn(onSuccess => {
-      onSuccess({
-        coords: {
-          latitude,
-          longitude
-        }
-      });
-    })
-  }
-};
 
 describe("PollForm", () => {
   afterEach(jest.clearAllMocks);
   afterAll(jest.restoreAllMocks);
   it("successful  submit", async () => {
-    // expect.assertions(6);
-    const pollId = "mockId";
+    expect.assertions(4);
+
     const options = [
       { _id: "firstId", name: "React", poll: pollId, date: "", votes: 0 },
       { _id: "secondId", name: "Angular", poll: pollId, date: "", votes: 0 }
@@ -88,76 +79,14 @@ describe("PollForm", () => {
     await wait(() => {
       expect(axios.post).toHaveBeenCalledTimes(1);
       expect(axios.post).toHaveBeenCalledWith(
-        `${process.env.REACT_APP_API_URL}/polls/${pollId}/options/${options[0]._id}/votes`
+        `${process.env.REACT_APP_API_URL}/polls/${pollId}/options/${options[1]._id}/votes`,
+        {},
+        {
+          headers: { Authorization: `bearer ${token}` }
+        }
       );
       expect(history.push).toHaveBeenCalledTimes(1);
       expect(history.push).toHaveBeenCalledWith(`/polls/${pollId}/results`);
     });
   });
-  //   it("unsuccessful  submit", async () => {
-  //     const token = "mockToken";
-  //     axiosMock.post.mockRejectedValue({
-  //       data: { data: {} },
-  //       status: 400
-  //     });
-  //     expect.assertions(5);
-  //     const options = ["React", "Angular", "Vue"];
-  //     const credentials = [
-  //       { value: "Framework Showdown", placeholder: "Name" },
-  //       {
-  //         value: "What framework do you use?",
-  //         placeholder: "Description"
-  //       }
-  //     ];
-  //     const { getByText, getByPlaceholderText, getByTestId } = render(
-  //       <PollForm />,
-  //       {
-  //         wrapper: ({ children }) => (
-  //           <AuthContext.Provider value={{ authState: { token } }}>
-  //             <Router history={history}>{children}</Router>
-  //           </AuthContext.Provider>
-  //         )
-  //       }
-  //     );
-
-  //     credentials.forEach(({ value, placeholder }) => {
-  //       const input = getByPlaceholderText(placeholder);
-  //       userEvent.type(input, value);
-  //       expect(input).toHaveAttribute("value", value);
-  //     });
-
-  //     const endDateInput = getByPlaceholderText("End Date");
-  //     const endDate = "2109-10-10";
-  //     fireEvent.change(endDateInput, { target: { value: endDate } });
-
-  //     const addOptionButton = getByText("Add option");
-  //     // eslint-disable-next-line no-restricted-syntax
-  //     for await (const option of options) {
-  //       userEvent.click(addOptionButton);
-  //       const optionInput = await waitForElement(() =>
-  //         getByTestId(`option-${options.indexOf(option)}`)
-  //       );
-  //       userEvent.type(optionInput, option);
-  //     }
-  //     const submitButton = getByText("Create Poll");
-
-  //     userEvent.click(submitButton);
-
-  //     await wait(() => {
-  //       expect(axios.post).toHaveBeenCalledTimes(1);
-  //       expect(axios.post).toHaveBeenCalledWith(
-  //         `${process.env.REACT_APP_API_URL}/polls`,
-  //         {
-  //           name: credentials[0].value,
-  //           description: credentials[1].value,
-  //           endDate,
-  //           options
-  //         },
-  //         {
-  //           headers: { Authorization: `bearer ${token}` }
-  //         }
-  //       );
-  //       expect(history.push).not.toHaveBeenCalled();
-  //     });
-  //   });
 });
