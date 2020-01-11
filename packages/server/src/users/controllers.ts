@@ -68,7 +68,7 @@ export const logIn = async (
         userId: user._id,
       },
       JWT_SECRET,
-      { expiresIn: '1h' },
+      { expiresIn: '168h' },
     );
 
     const { username, date, _id, polls, voted } = user;

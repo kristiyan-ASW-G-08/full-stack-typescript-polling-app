@@ -6,11 +6,11 @@ import axios from "axios";
 import { createMemoryHistory } from "history";
 import userEvent from "@testing-library/user-event";
 import { AuthContext } from "contexts/AuthContext";
-import getPoll from "../../utilities/getPoll";
+import getPoll from "utilities/getPoll";
 import PollForm from ".";
 
 jest.mock("axios");
-jest.mock("./getPoll");
+jest.mock("utilities/getPoll");
 const pollId = "mockId";
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -26,11 +26,11 @@ const history = createMemoryHistory();
 
 jest.spyOn(history, "push");
 
-describe("PollForm", () => {
+describe("PollResults", () => {
   afterEach(jest.clearAllMocks);
   afterAll(jest.restoreAllMocks);
-  it("successful  submit", async () => {
-    expect.assertions(4);
+  it("", async () => {
+    expect.assertions(2);
 
     const options = [
       { _id: "firstId", name: "React", poll: pollId, date: "", votes: 0 },
@@ -54,7 +54,7 @@ describe("PollForm", () => {
       status: 200
     });
 
-    const { getByText, getByTestId } = render(<PollForm />, {
+    render(<PollForm />, {
       wrapper: ({ children }) => (
         <AuthContext.Provider
           value={{ authState: { token, user: { voted: [] } } }}
@@ -63,30 +63,10 @@ describe("PollForm", () => {
         </AuthContext.Provider>
       )
     });
-    const firstOptions = await waitForElement(() =>
-      getByTestId(`option-${options[0]._id}`)
-    );
-    const secondOption = await waitForElement(() =>
-      getByTestId(`option-${options[1]._id}`)
-    );
-
-    userEvent.click(firstOptions);
-    userEvent.click(secondOption);
-    const submitButton = getByText("Vote");
-
-    userEvent.click(submitButton);
 
     await wait(() => {
-      expect(axios.post).toHaveBeenCalledTimes(1);
-      expect(axios.post).toHaveBeenCalledWith(
-        `${process.env.REACT_APP_API_URL}/polls/${pollId}/options/${options[1]._id}/votes`,
-        {},
-        {
-          headers: { Authorization: `bearer ${token}` }
-        }
-      );
-      expect(history.push).toHaveBeenCalledTimes(1);
-      expect(history.push).toHaveBeenCalledWith(`/polls/${pollId}/results`);
+      expect(getPollMock).toHaveBeenCalledTimes(1);
+      expect(getPollMock).toHaveBeenCalledWith(pollId);
     });
   });
 });

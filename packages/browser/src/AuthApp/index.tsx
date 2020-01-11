@@ -6,6 +6,7 @@ import Loader from "components/Loader";
 const Home = lazy(() => import("pages/Home"));
 const PollForm = lazy(() => import("pages/PollForm"));
 const PollPage = lazy(() => import("pages/PollPage"));
+const PollResults = lazy(() => import("pages/PollResults"));
 const Polls = lazy(() => import("pages/Polls"));
 const NotFound = lazy(() => import("pages/NotFound"));
 
@@ -35,6 +36,15 @@ const AuthApp: FC = () => {
         />
         <Route
           exact
+          path="/polls/:pollId/results"
+          render={(): JSX.Element => (
+            <Suspense fallback={<Loader />}>
+              <PollResults />
+            </Suspense>
+          )}
+        />
+        <Route
+          exact
           path="/polls"
           render={(): JSX.Element => (
             <Suspense fallback={<Loader />}>
@@ -42,6 +52,7 @@ const AuthApp: FC = () => {
             </Suspense>
           )}
         />
+
         <Route
           exact
           render={(): JSX.Element => (

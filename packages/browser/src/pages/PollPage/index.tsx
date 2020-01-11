@@ -14,7 +14,7 @@ import { AuthContext } from "contexts/AuthContext";
 import voteValidator from "validators/voteValidator";
 import transformValidationErrors from "utilities/transformValidationErrors";
 import FormWrapper from "components/FormWrapper";
-import getPoll from "./getPoll";
+import getPoll from "../../utilities/getPoll";
 
 const PollPage: FC = () => {
   const { pollId } = useParams();
@@ -37,20 +37,26 @@ const PollPage: FC = () => {
         setOptions(response.options);
       })
       .catch(console.log);
-  });
+  }, [history, pollId, voted]);
 
   const submitHandler = async (
     { option }: FormikValues,
     { setErrors }: FormikActions<FormikValues>
   ): Promise<void> => {
     try {
-      await axios.post(
+      console.log(option);
+      console.log(
+        `${process.env.REACT_APP_API_URL}/polls/${poll?._id}/options/${option}/votes`,
+        token
+      );
+      const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/polls/${poll?._id}/options/${option}/votes`,
         {},
         {
           headers: { Authorization: `bearer ${token}` }
         }
       );
+      console.log(response);
       history.push(`/polls/${pollId}/results`);
     } catch (error) {
       if (

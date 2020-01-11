@@ -1,6 +1,6 @@
 import axios from "axios";
 import { wait } from "@testing-library/react";
-import getPoll from "./getPoll";
+import getPoll from "../getPoll";
 
 jest.mock("axios");
 const axiosMock = axios as jest.Mocked<typeof axios>;
