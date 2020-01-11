@@ -26,10 +26,8 @@ export const postPoll = async (
       poll: mongoose.Types.ObjectId;
     } => ({ name: option, poll: _id }));
     await Option.insertMany(optionObjects);
-
     res.status(200).json({ data: { pollId: _id } });
   } catch (err) {
-    console.log(err);
     passErrorToNext(err, next);
   }
 };

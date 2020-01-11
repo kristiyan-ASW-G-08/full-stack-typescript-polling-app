@@ -25,6 +25,7 @@ const PollSchema: Schema = new Schema({
   creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
 });
 
