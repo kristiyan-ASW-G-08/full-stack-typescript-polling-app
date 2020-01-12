@@ -12,7 +12,8 @@ import Poll from "types/Poll";
 import Option from "types/Option";
 import { AuthContext } from "contexts/AuthContext";
 import voteValidator from "validators/voteValidator";
-import transformValidationErrors from "utilities/transformValidationErrors";
+import formErrorHandler from "utilities/formErrorHandler";
+import { NotificationContext } from "contexts/NotificationContext";
 import FormWrapper from "components/FormWrapper";
 import getPoll from "../../utilities/getPoll";
 
@@ -23,6 +24,7 @@ const PollPage: FC = () => {
     token,
     user: { voted }
   } = useContext(AuthContext).authState;
+  const { setNotification } = useContext(NotificationContext);
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[] | null>(null);
 
@@ -59,14 +61,7 @@ const PollPage: FC = () => {
       console.log(response);
       history.push(`/polls/${pollId}/results`);
     } catch (error) {
-      if (
-        error?.response?.data?.data &&
-        Array.isArray(error.response.data.data)
-      ) {
-        setErrors(transformValidationErrors(error.response.data.data));
-      } else {
-        console.log(error);
-      }
+      formErrorHandler(error, setErrors, setNotification);
     }
   };
   return (

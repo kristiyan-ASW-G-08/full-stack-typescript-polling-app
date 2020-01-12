@@ -23,7 +23,6 @@ export const AuthContext = createContext<AuthContextProps>({
 export const AuthContextProvider: FC = ({ children }) => {
   const [authState, dispatch] = useReducer(reducer, defaultAuthState);
   const login = (payload: AuthState) => dispatch({ type: "login", payload });
-
   const logout = () => dispatch({ type: "logout", payload: defaultAuthState });
   return (
     <AuthContext.Provider value={{ authState, logout, login }}>

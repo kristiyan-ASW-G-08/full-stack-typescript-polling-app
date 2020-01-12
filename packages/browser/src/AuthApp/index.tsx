@@ -1,7 +1,9 @@
-import React, { FC, lazy, Suspense } from "react";
+import React, { FC, lazy, Suspense, useContext } from "react";
 import { Route, Switch } from "react-router-dom";
 import AuthNavbar from "components/AuthNavbar";
 import Loader from "components/Loader";
+import Notification from "components/Notification";
+import { NotificationContext } from "contexts/NotificationContext";
 
 const Home = lazy(() => import("pages/Home"));
 const PollForm = lazy(() => import("pages/PollForm"));
@@ -11,9 +13,18 @@ const Polls = lazy(() => import("pages/Polls"));
 const NotFound = lazy(() => import("pages/NotFound"));
 
 const AuthApp: FC = () => {
+  const { notificationState } = useContext(NotificationContext);
   return (
     <>
       <AuthNavbar />
+      {notificationState?.isActive ? (
+        <Notification
+          type={notificationState.type}
+          content={notificationState.content}
+        />
+      ) : (
+        ""
+      )}
       <Switch>
         <Route exact path="/" component={Home} />
         <Route

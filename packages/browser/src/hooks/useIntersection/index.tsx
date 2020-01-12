@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from "react";
 
 const useIntersection = (cb: () => void | Promise<void>) => {
   const [element, setElement] = useState<HTMLDivElement | null>();
@@ -13,8 +13,8 @@ const useIntersection = (cb: () => void | Promise<void>) => {
           console.log(error);
         }
       },
-      { threshold: 1 },
-    ),
+      { threshold: 1 }
+    )
   );
   useEffect(() => {
     const { current } = observer;

@@ -1,14 +1,16 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import axios from "axios";
 import { Formik, FormikValues, FormikActions } from "formik";
 import { useHistory } from "react-router-dom";
 import UserSignUpValidator from "@poll/common/source/validators/signUpValidator";
-import transformValidationErrors from "utilities/transformValidationErrors";
 import Input from "components/Input";
 import FormWrapper from "components/FormWrapper";
+import { NotificationContext } from "contexts/NotificationContext";
+import formErrorHandler from "utilities/formErrorHandler";
 
 export const SignUp: FC = () => {
   const history = useHistory();
+  const { setNotification } = useContext(NotificationContext);
   const submitHandler = async (
     formValues: FormikValues,
     { setErrors }: FormikActions<FormikValues>
@@ -17,14 +19,7 @@ export const SignUp: FC = () => {
       await axios.post(`${process.env.REACT_APP_API_URL}/users`, formValues);
       history.push("/login");
     } catch (error) {
-      if (
-        error?.response?.data?.data &&
-        Array.isArray(error.response.data.data)
-      ) {
-        setErrors(transformValidationErrors(error.response.data.data));
-      } else {
-        console.log({ ...error });
-      }
+      formErrorHandler(error, setErrors, setNotification);
     }
   };
   return (

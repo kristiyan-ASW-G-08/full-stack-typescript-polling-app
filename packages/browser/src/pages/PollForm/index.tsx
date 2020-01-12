@@ -2,15 +2,17 @@ import React, { FC, useContext } from "react";
 import axios from "axios";
 import { Formik, FormikValues, FormikActions, FieldArray } from "formik";
 import pollValidator from "validators/pollValidator";
-import transformValidationErrors from "utilities/transformValidationErrors";
 import Input from "components/Input";
 import FormWrapper from "components/FormWrapper";
 import Button from "components/Button";
 import { AuthContext } from "contexts/AuthContext";
+import { NotificationContext } from "contexts/NotificationContext";
 import { useHistory } from "react-router-dom";
+import formErrorHandler from "utilities/formErrorHandler";
 
 export const PollForm: FC = () => {
   const { authState } = useContext(AuthContext);
+  const { setNotification } = useContext(NotificationContext);
   const history = useHistory();
   const submitHandler = async (
     formValues: FormikValues,
@@ -30,14 +32,7 @@ export const PollForm: FC = () => {
       const { pollId } = response?.data?.data;
       history.push(`/polls/${pollId}`);
     } catch (error) {
-      if (
-        error?.response?.data?.data &&
-        Array.isArray(error.response.data.data)
-      ) {
-        setErrors(transformValidationErrors(error.response.data.data));
-      } else {
-        console.log({ ...error });
-      }
+      formErrorHandler(error, setErrors, setNotification);
     }
   };
   return (

@@ -28,7 +28,7 @@ export const NotificationContextProvider: FC = ({ children }) => {
 
   const setNotification = (
     content: string,
-    type: notificationType = "message"
+    type: notificationType = "warning"
   ) => {
     console.log(content, type);
     setNotificationState({ content, type, isActive: true });
