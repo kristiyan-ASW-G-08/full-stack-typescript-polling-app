@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.47](https://github.com/kristiyan-ASW-G-08/typescript-meetup-clone/compare/v1.0.46...v1.0.47) (2020-01-12)
+
+**Note:** Version bump only for package full-stack-typescript-polling-app
+
+
+
+
+
 ## [1.0.46](https://github.com/kristiyan-ASW-G-08/typescript-meetup-clone/compare/v1.0.45...v1.0.46) (2020-01-12)
 
 **Note:** Version bump only for package full-stack-typescript-polling-app
