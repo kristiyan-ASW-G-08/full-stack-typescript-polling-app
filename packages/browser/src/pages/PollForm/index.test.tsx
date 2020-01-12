@@ -11,7 +11,14 @@ import axios from "axios";
 import { createMemoryHistory } from "history";
 import userEvent from "@testing-library/user-event";
 import { AuthContext } from "contexts/AuthContext";
+import formErrorHandler from "utilities/formErrorHandler";
 import PollForm from ".";
+
+jest.mock("utilities/formErrorHandler");
+
+const formErrorHandlerMock = formErrorHandler as jest.MockedFunction<
+  typeof formErrorHandler
+>;
 
 jest.mock("axios");
 
@@ -98,7 +105,7 @@ describe("PollForm", () => {
       data: { data: {} },
       status: 400
     });
-    expect.assertions(5);
+    expect.assertions(6);
     const options = ["React", "Angular", "Vue"];
     const credentials = [
       { value: "Framework Showdown", placeholder: "Name" },
@@ -157,5 +164,7 @@ describe("PollForm", () => {
       );
       expect(history.push).not.toHaveBeenCalled();
     });
+
+    expect(formErrorHandlerMock).toHaveBeenCalledTimes(1);
   });
 });

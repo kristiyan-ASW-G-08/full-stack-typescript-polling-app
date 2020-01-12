@@ -6,11 +6,11 @@ import axios from "axios";
 import { createMemoryHistory } from "history";
 import userEvent from "@testing-library/user-event";
 import { AuthContext } from "contexts/AuthContext";
-import getPoll from "../../utilities/getPoll";
+import getPoll from "utilities/getPoll";
 import PollForm from ".";
 
 jest.mock("axios");
-jest.mock("./getPoll");
+jest.mock("utilities/getPoll");
 const pollId = "mockId";
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),

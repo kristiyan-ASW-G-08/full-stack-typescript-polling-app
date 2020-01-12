@@ -6,8 +6,14 @@ import { Router } from "react-router-dom";
 import axios from "axios";
 import { createMemoryHistory } from "history";
 import { AuthContext } from "contexts/AuthContext";
+import formErrorHandler from "utilities/formErrorHandler";
 import Login from ".";
 
+jest.mock("utilities/formErrorHandler");
+
+const formErrorHandlerMock = formErrorHandler as jest.MockedFunction<
+  typeof formErrorHandler
+>;
 jest.mock("axios");
 
 const axiosMock = axios as jest.Mocked<typeof axios>;
@@ -83,7 +89,7 @@ describe("Login", () => {
       },
       status: 400
     });
-    expect.assertions(6);
+    expect.assertions(7);
     const password = "passwordpassword";
     const credentials = [
       {
@@ -125,5 +131,6 @@ describe("Login", () => {
       expect(login).not.toHaveBeenCalled();
       expect(history.push).not.toHaveBeenCalled();
     });
+    expect(formErrorHandlerMock).toHaveBeenCalledTimes(1);
   });
 });

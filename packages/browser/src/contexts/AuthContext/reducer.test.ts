@@ -12,7 +12,12 @@ describe("AuthContext reducer", () => {
       date: ""
     }
   };
-  afterEach(() => jest.clearAllMocks());
+
+  // eslint-disable-next-line no-proto
+  jest.spyOn(window.localStorage.__proto__, "setItem");
+  // eslint-disable-next-line no-proto
+  jest.spyOn(window.localStorage.__proto__, "removeItem");
+  afterEach(jest.clearAllMocks);
   it("reducer calls the correct reducers", () => {
     jest.spyOn(reducers, "login");
     jest.spyOn(reducers, "logout");
@@ -33,31 +38,26 @@ describe("AuthContext reducer", () => {
   });
 
   it("login reducer should return the passed payload and set token and user in localStorage", () => {
-    expect.assertions(3);
-    jest.spyOn(window.localStorage, "setItem");
-    window.localStorage.setItem = jest.fn();
+    expect.assertions(2);
+
     reducers.login(authenticatedAuthState);
 
-    expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+    expect(localStorage.setItem).toHaveBeenCalledTimes(1);
     expect(localStorage.setItem).toHaveBeenNthCalledWith(
       1,
-      "token",
-      JSON.stringify(authenticatedAuthState.token)
-    );
-    expect(localStorage.setItem).toHaveBeenNthCalledWith(
-      2,
-      "user",
-      JSON.stringify(authenticatedAuthState.user)
+      "pollAppAuth",
+      JSON.stringify({
+        token: authenticatedAuthState.token,
+        user: authenticatedAuthState.user
+      })
     );
   });
   it("logout reducer should return the passed payload and remove token and user in localStorage", () => {
-    expect.assertions(3);
-    jest.spyOn(window.localStorage, "removeItem");
-    window.localStorage.removeItem = jest.fn();
+    expect.assertions(2);
+
     reducers.logout();
 
-    expect(localStorage.removeItem).toHaveBeenCalledTimes(2);
-    expect(localStorage.removeItem).toHaveBeenNthCalledWith(1, "token");
-    expect(localStorage.removeItem).toHaveBeenNthCalledWith(2, "user");
+    expect(localStorage.removeItem).toHaveBeenCalledTimes(1);
+    expect(localStorage.removeItem).toHaveBeenNthCalledWith(1, "pollAppAuth");
   });
 });

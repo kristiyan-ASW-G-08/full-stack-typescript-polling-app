@@ -15,7 +15,7 @@ import voteValidator from "validators/voteValidator";
 import formErrorHandler from "utilities/formErrorHandler";
 import { NotificationContext } from "contexts/NotificationContext";
 import FormWrapper from "components/FormWrapper";
-import getPoll from "../../utilities/getPoll";
+import getPoll from "utilities/getPoll";
 
 const PollPage: FC = () => {
   const { pollId } = useParams();
@@ -46,19 +46,13 @@ const PollPage: FC = () => {
     { setErrors }: FormikActions<FormikValues>
   ): Promise<void> => {
     try {
-      console.log(option);
-      console.log(
-        `${process.env.REACT_APP_API_URL}/polls/${poll?._id}/options/${option}/votes`,
-        token
-      );
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_API_URL}/polls/${poll?._id}/options/${option}/votes`,
         {},
         {
           headers: { Authorization: `bearer ${token}` }
         }
       );
-      console.log(response);
       history.push(`/polls/${pollId}/results`);
     } catch (error) {
       formErrorHandler(error, setErrors, setNotification);

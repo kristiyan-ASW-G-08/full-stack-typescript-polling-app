@@ -15,7 +15,7 @@ describe("getPoll", () => {
   const pollId = "pollId";
   it("resolves", async () => {
     expect.assertions(3);
-    await expect(getPoll(pollId)).resolves.toEqual(data);
+    await expect(getPoll(pollId)).resolves.toEqual({ poll: [], options: [] });
     await wait(() => {
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalledWith(

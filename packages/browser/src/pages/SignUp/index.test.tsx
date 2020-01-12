@@ -5,7 +5,14 @@ import UserEvent from "@testing-library/user-event";
 import { Router } from "react-router-dom";
 import axios from "axios";
 import { createMemoryHistory } from "history";
+import formErrorHandler from "utilities/formErrorHandler";
 import SignUp from ".";
+
+jest.mock("utilities/formErrorHandler");
+
+const formErrorHandlerMock = formErrorHandler as jest.MockedFunction<
+  typeof formErrorHandler
+>;
 
 jest.mock("axios");
 
@@ -80,7 +87,7 @@ describe("SignUp", () => {
       },
       status: 400
     });
-    expect.assertions(7);
+    expect.assertions(8);
     const password = "passwordpassword";
     const credentials = [
       { value: "newUsername", placeholder: "Username" },
@@ -123,6 +130,7 @@ describe("SignUp", () => {
         }
       );
       expect(history.push).not.toHaveBeenCalled();
+      expect(formErrorHandlerMock).toHaveBeenCalledTimes(1);
     });
   });
 });
